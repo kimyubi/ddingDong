@@ -18,25 +18,23 @@ public class Account {
     private String name;
 
     @Column(nullable = false, unique = true)
-    private String SignUpId;
+    private String signUpId;
 
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
-    private String email;
-
+    @Lob @Basic(fetch = FetchType.EAGER)
     private String profileImage;
 
-    private boolean emailVerified;
-
-    private String emailVerifyToken;
+//    private boolean emailVerified;
+//
+//    private String emailVerifyToken;
 
     private LocalDateTime signUpAt;
 
     private String shortIntroduce;
 
-    private LocalDateTime emailVerifyTokenGeneratedAt;
+//    private LocalDateTime emailVerifyTokenGeneratedAt;
 
     private boolean circlesCreateNotification;
 
@@ -46,10 +44,10 @@ public class Account {
 
     private boolean recognizedManager;
 
-//    @OneToMany
+//    @ManyToMany
 //    private Set<IntroduceTag> introduceTags;       // TODO 소개 태그
 
-//    @OneToMany
+//    @ManyToMany
 //    private Set<FieldTag> FieldTags;       // TODO 동아리 분야 태그
 
 

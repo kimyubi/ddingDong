@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments.html :: head"></head>
+
+<body class="bg-light">
+
+<nav th:replace="fragments.html :: nav"></nav>
+
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>ddingDong, 띵동 회원가입</h2>
+    </div>
+    <div class="row justify-content-center">
+        <form class="col-sm-6" action="#"
+              th:action="@{/sign-up}" th:object="${signUpForm}" method="post">
+
+            <div class="form-group">
+                <div class="row justify-content-center">
+                    <div class="col-sm-4">
+                       <div class="form-check form-check-inline">
+                           <input class="form-check-input" type="radio" th:field="*{signUpAsManager}" id="signUpAsUser" value=false checked>
+                           <label class="form-check-label" for="signUpAsUser">일반 사용자</label>
+                       </div>
+                    </div>
+                    <div class="col-sm-4">
+                       <div class="form-check form-check-inline">
+                           <input class="form-check-input" type="radio" th:field="*{signUpAsManager}" id="signUpAsManager" value=true>
+                           <label class="form-check-label" for="signUpAsManager">매니저</label>
+                       </div>
+                    </div>
+                </div>
+           </div>
+            <div class="form-group">
+                <label for="name">이름</label>
+                <input id="name" type="text" th:field="*{name}" class="form-control"
+                       placeholder="이름" aria-describedby="nameHelp" required>
+                <small id="nameHelp" class="form-text text-muted">
+                        이름을 2자 이상 20자 이내로 입력하세요.
+                </small>
+                <small class="form-text text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name Error</small>
+            </div>
+
+            <div class="form-group">
+                <label for="signUpId">아이디</label>
+                <input id="signUpId" type="text" th:field="*{signUpId}" class="form-control"
+                       placeholder="아이디" aria-describedby="idHelp" required>
+                <small id="idHelp" class="form-text text-muted">
+                        아이디를 5자 이상 20자 이내로 입력하세요. 가입 이후에는 아이디를 변경할 수 없습니다.
+                </small>
+                <small class="form-text text-danger" th:if="${#fields.hasErrors('signUpId')}" th:errors="*{signUpId}">signUpId Error</small>
+            </div>
+
+            <div class="form-group">
+                <label for="password">패스워드</label>
+                <input id="password" type="password" th:field="*{password}" class="form-control" placeholder="패스워드"
+                       aria-describedby="passwordHelp" required>
+                <small id="passwordHelp" class="form-text text-muted">
+                        영문자, 숫자, 특수기호를 각각 1개 이상 조합하여 8자 이상 50자 이내로 입력하세요.
+                </small>
+                <small class="form-text text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</small>
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-secondary btn-block" type="submit"
+                        aria-describedby="submitHelp">가입하기</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<footer th:replace="fragments.html :: footer"></footer>
+
+</body>
+</html>
