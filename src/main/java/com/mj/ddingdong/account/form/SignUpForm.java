@@ -15,6 +15,10 @@ public class SignUpForm {
     private String name;
 
     @NotBlank
+    @Length(max = 20, message = "20자 이내로 입력하세요.")
+    private String nickname;
+
+    @NotBlank
     @Length(min = 5, max = 20, message = "5자 이상 20자 이내로 입력하세요.")
     private String signUpId;
 

@@ -30,6 +30,7 @@
                        </div>
                     </div>
                 </div>
+
            </div>
             <div class="form-group">
                 <label for="name">이름</label>
@@ -37,6 +38,16 @@
                        placeholder="이름" aria-describedby="nameHelp" required>
                 <small id="nameHelp" class="form-text text-muted">
                         이름을 2자 이상 20자 이내로 입력하세요.
+                </small>
+                <small class="form-text text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name Error</small>
+            </div>
+
+            <div class="form-group">
+                <label for="nickname">닉네임</label>
+                <input id="nickname" type="text" th:field="*{nickname}" class="form-control"
+                       placeholder="닉네임" aria-describedby="nicknameHelp" required>
+                <small id="nicknameHelp" class="form-text text-muted">
+                    닉네임을 20자 이내로 입력하세요.
                 </small>
                 <small class="form-text text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name Error</small>
             </div>

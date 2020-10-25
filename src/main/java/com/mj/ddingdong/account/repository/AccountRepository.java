@@ -9,4 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public interface AccountRepository extends JpaRepository<Account,Long> {
     boolean existsBySignUpId(String signUpId);
+
+    boolean existsByNickname(String nickname);
+
+    Account findBySignUpId(String signUpId);
 }

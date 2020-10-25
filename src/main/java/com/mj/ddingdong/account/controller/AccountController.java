@@ -39,10 +39,15 @@ public class AccountController {
         if (errors.hasErrors()) {
             return "account/sign-up";
         }
-
         Account account = accountService.signUp(signUpForm);
         accountService.login(account);
         return "redirect:/";
-
     }
+
+    @GetMapping("/login")
+    public String logIn(){
+        return "account/login";
+    }
+
+
 }

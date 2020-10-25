@@ -23,5 +23,10 @@ public class SignUpValidator implements Validator {
         if(accountRepository.existsBySignUpId(signUpForm.getSignUpId())){
             errors.rejectValue("signUpId","wrong.signUpId","해당 아이디는 사용할 수 없습니다.");
         }
+
+        if(accountRepository.existsByNickname(signUpForm.getNickname())){
+            errors.rejectValue("nickname","wrong.nickname","이미 사용중인 닉네임입니다.");
+        }
+
     }
 }
