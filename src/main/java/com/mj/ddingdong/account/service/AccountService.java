@@ -4,8 +4,8 @@ import com.mj.ddingdong.account.domain.Account;
 import com.mj.ddingdong.account.domain.UserAccount;
 import com.mj.ddingdong.account.form.SignUpForm;
 import com.mj.ddingdong.account.repository.AccountRepository;
-import com.mj.ddingdong.main.CurrentAccount;
 import com.mj.ddingdong.profiles.form.ProfileForm;
+import com.mj.ddingdong.tag.domain.DepartmentTag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -70,5 +72,20 @@ public class AccountService implements UserDetailsService {
     public void updateProfile(Account account, ProfileForm profileForm) {
         modelMapper.map(profileForm,account);
         accountRepository.save(account);
+    }
+
+    public Set<DepartmentTag> getDepartmentTags(Account account) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        return byId.orElseThrow().getDepartmentTags();
+    }
+
+    public void addDepartmentTag(Account account, DepartmentTag departmentTag) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        byId.ifPresent(a -> a.getDepartmentTags().add(departmentTag));
+    }
+
+    public void removeDepartmentTag(Account account, DepartmentTag departmentTag) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        byId.ifPresent(a -> a.getDepartmentTags().remove(departmentTag));
     }
 }

@@ -8,4 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 @Repository
 public interface DepartmentTagRepository extends JpaRepository<DepartmentTag,Long> {
+
+    DepartmentTag findByTitle(String tagTitle);
 }

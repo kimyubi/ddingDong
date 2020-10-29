@@ -1,12 +1,14 @@
 package com.mj.ddingdong.account.domain;
 
 import com.mj.ddingdong.tag.domain.DepartmentTag;
+import com.mj.ddingdong.tag.domain.IntroduceTag;
 import lombok.*;
 
 import javax.persistence.*;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -50,15 +52,15 @@ public class Account {
         return URLEncoder.encode(this.nickname, StandardCharsets.UTF_8);
     }
 
-//    @ManyToMany
-//    private Set<IntroduceTag> introduceTags;       // TODO 소개 태그
-//
+    @ManyToMany
+    private Set<IntroduceTag> introduceTags = new HashSet<>(); ;       // TODO 소개 태그
+
 //    @ManyToMany
 //    private Set<FieldTag> FieldTags;       // TODO 동아리 분야 태그
 //
 
     @ManyToMany
-    private Set<DepartmentTag> DepartmentTags;       // TODO 학부, 전공 태그
+    private Set<DepartmentTag> DepartmentTags = new HashSet<>();       // TODO 학부, 전공 태그
 
 
 }

@@ -7,8 +7,8 @@
 
 <nav th:replace="fragments.html :: nav"></nav>
 <div class="container">
-    <div class="row mt-5 justify-content-center">
-        <div class="col-3">
+    <div class="row ml-5 mt-5 justify-content-center">
+        <div class="col-2 ml-5">
             <svg th:if="${#strings.isEmpty(byNickname.profileImage)}" class="img-fluid float-right rounded img-thumbnail"
                  th:data-jdenticon-value="${byNickname.nickname}" width="150" height="180"></svg>
             <img th:if="${!#strings.isEmpty(byNickname.profileImage)}" class="img-fluid float-left rounded img-thumbnail"

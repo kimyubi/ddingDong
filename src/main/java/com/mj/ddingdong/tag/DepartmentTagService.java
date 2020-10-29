@@ -1,5 +1,6 @@
-package com.mj.ddingdong.tag.domain;
+package com.mj.ddingdong.tag;
 
+import com.mj.ddingdong.tag.domain.DepartmentTag;
 import com.mj.ddingdong.tag.repository.DepartmentTagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
