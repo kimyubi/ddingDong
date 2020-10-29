@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments.html :: head"></head>
+
+<body class="bg-light">
+
+<nav th:replace="fragments.html :: nav"></nav>
+<div class="container">
+    <div class="row mt-5 justify-content-center">
+        <div class="col-3">
+            <svg th:if="${#strings.isEmpty(byNickname.profileImage)}" class="img-fluid float-right rounded img-thumbnail"
+                 th:data-jdenticon-value="${byNickname.nickname}" width="150" height="180"></svg>
+            <img th:if="${!#strings.isEmpty(byNickname.profileImage)}" class="img-fluid float-left rounded img-thumbnail"
+                 th:src="${byNickname.profileImage}"
+                 width="150" height="180"/>
+        </div>
+        <div class="col-8">
+            <h2 style="display: inline" th:text="${byNickname.nickname}">nickname</h2>
+            <span th:if="${byNickname?.signUpAsManager && byNickname?.recognizedManager}" class="badge badge-dark px-2 py-2">매니저</span>
+            <p class="lead mt-3" th:if="${!#strings.isEmpty(byNickname.shortIntroduce)}" th:text="${byNickname.shortIntroduce}">shortIntroduce</p>
+            <p class="lead mt-3" th:if="${#strings.isEmpty(byNickname.shortIntroduce) && isOwner}">
+                한 줄 소개를 추가하세요.
+            </p>
+            <p class="lead mt-3" th:if="${!isOwner}">
+            </p>
+            <p th:if="${isOwner}">
+                <span style="font-size: 20px;">
+                    <i class="fa fa-calendar-o mr-2"></i>
+                </span>
+                <span th:text="${#temporals.format(byNickname.signUpAt, 'yyyy년 M월 가입')}" ></span>
+            </p>
+            <p th:if="${byNickname.hagbeon != 0}">
+                <span style="font-size: 20px;">
+                    <i class="fa fa-address-card-o mr-2"></i>
+                </span>
+                <span th:text=" |${byNickname.hagbeon} 학번|"></span>
+            </p>
+            <div th:if="${isOwner}">
+                <a class="btn btn-outline-secondary" href="#" th:href="@{/settings/profile}">프로필 수정</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-3">
+
+        </div>
+        <div class="col-8">
+
+        </div>
+    </div>
+</div>
+<footer th:replace="fragments.html :: footer"></footer>
+
+</body>
+</html>

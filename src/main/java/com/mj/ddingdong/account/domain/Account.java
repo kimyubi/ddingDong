@@ -3,8 +3,9 @@ package com.mj.ddingdong.account.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Entity
 @Getter @Setter @EqualsAndHashCode(of = "id")
@@ -17,7 +18,7 @@ public class Account {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String nickname;
 
     @Column(nullable = false, unique = true)
@@ -29,15 +30,9 @@ public class Account {
     @Lob @Basic(fetch = FetchType.EAGER)
     private String profileImage;
 
-//    private boolean emailVerified;
-//
-//    private String emailVerifyToken;
-
     private LocalDateTime signUpAt;
 
     private String shortIntroduce;
-
-//    private LocalDateTime emailVerifyTokenGeneratedAt;
 
     private boolean circlesCreateNotification;
 
@@ -47,11 +42,20 @@ public class Account {
 
     private boolean recognizedManager;
 
-//    @ManyToMany
-//    private Set<IntroduceTag> introduceTags;       // TODO 소개 태그
+    private int hagbeon;
+
+    public String getEncodedNickname() {
+        return URLEncoder.encode(this.nickname, StandardCharsets.UTF_8);
+    }
 
 //    @ManyToMany
+//    private Set<IntroduceTag> introduceTags;       // TODO 소개 태그
+//
+//    @ManyToMany
 //    private Set<FieldTag> FieldTags;       // TODO 동아리 분야 태그
+//
+//    @ManyToMany
+//    private Set<DepartmentTag> DepartmentTags;       // TODO 학부 태그
 
 
 }

@@ -41,7 +41,6 @@ public class AccountService implements UserDetailsService {
                 .signUpAsManager(signUpForm.isSignUpAsManager())
                 .signUpAt(LocalDateTime.now())
                 .build();
-        
         return  accountRepository.save(account);
     }
 

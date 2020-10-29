@@ -15,13 +15,13 @@ public class SignUpForm {
     private String name;
 
     @NotBlank
+    @Pattern(regexp = "\\S", message = "공백은 사용할 수 없습니다.")
     @Length(max = 20, message = "20자 이내로 입력하세요.")
     private String nickname;
 
     @NotBlank
     @Length(min = 5, max = 20, message = "5자 이상 20자 이내로 입력하세요.")
     private String signUpId;
-
 
     @NotBlank
     @Pattern(regexp = "((?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,50})", message = "영문자, 숫자, 특수기호를 각각 1개 이상 조합하여 8자 이상 50자 이내로 입력하세요.")
