@@ -14,6 +14,26 @@
             <img th:if="${!#strings.isEmpty(byNickname.profileImage)}" class="img-fluid float-left rounded img-thumbnail"
                  th:src="${byNickname.profileImage}"
                  width="150" height="180"/>
+            <p>
+                <span th:each="tag: ${byNickname.DepartmentTags}" class="font-weight-light text-monospace badge badge-pill badge-warning mr-3">
+                    <a th:href="@{'/search/zone/' + ${tag.title}}" class="text-decoration-none text-white">
+                        <i class="fa fa-tag"></i> <span th:text="${tag.title}"></span>
+                    </a>
+                </span>
+
+                <span th:each="tag: ${byNickname.introduceTags}"
+                      class="font-weight-light text-monospace badge badge-pill badge-info mr-3">
+                    <a th:href="@{'/search/tag/' + ${tag.title}}" class="text-decoration-none text-white">
+                        <i class="fa fa-tag"></i> <span th:text="${tag.title}"></span>
+                    </a>
+                </span>
+
+                <span th:each="tag: ${byNickname.FieldTags}" class="font-weight-light text-monospace badge badge-pill badge-primary mr-3">
+                    <a th:href="@{'/search/zone/' + ${tag.title}}" class="text-decoration-none text-white">
+                        <i class="fa fa-tag"></i> <span th:text="${tag.title}"></span>
+                    </a>
+                </span>
+            </p>
         </div>
         <div class="col-8">
             <h2 style="display: inline" th:text="${byNickname.nickname}">nickname</h2>
@@ -44,7 +64,24 @@
 
     <div class="row justify-content-center">
         <div class="col-3">
-
+<!--            <p>-->
+<!--                <span th:each="tag: ${byNickname.introduceTags}"-->
+<!--                      class="font-weight-light text-monospace badge badge-pill badge-info mr-3">-->
+<!--                    <a th:href="@{'/search/tag/' + ${tag.title}}" class="text-decoration-none text-white">-->
+<!--                        <i class="fa fa-tag"></i> <span th:text="${tag.title}"></span>-->
+<!--                    </a>-->
+<!--                </span>-->
+<!--                <span th:each="tag: ${byNickname.FieldTags}" class="font-weight-light text-monospace badge badge-primary mr-3">-->
+<!--                    <a th:href="@{'/search/zone/' + ${tag.title}}" class="text-decoration-none text-white">-->
+<!--                        <i class="fa fa-globe"></i> <span th:text="${tag.title}"></span>-->
+<!--                    </a>-->
+<!--                </span>-->
+<!--                <span th:each="tag: ${byNickname.DepartmentTags}" class="font-weight-light text-monospace badge badge-warning mr-3">-->
+<!--                    <a th:href="@{'/search/zone/' + ${tag.title}}" class="text-decoration-none text-white">-->
+<!--                        <i class="fa fa-globe"></i> <span th:text="${tag.title}"></span>-->
+<!--                    </a>-->
+<!--                </span>-->
+<!--            </p>-->
         </div>
         <div class="col-8">
 

@@ -28,21 +28,27 @@
                 </div>
             </div>
 
-            <div class="alert alert-warning" role="alert">
-                여러 개의<strong> 학부 또는 전공</strong>을 태그할 수 있으며, 선택 목록에
-                없는 항목은 태그가 불가능합니다.
+            <div class="alert alert-success" role="alert">
+                자신을 소개하는 태그를 등록해주세요!
             </div>
             <div class="row mb-3">
                 <div class="col-10">
-                    <div id="departmentWhitelist" th:text="${departmentWhitelist}" hidden></div>
-                    <input id="departmentTags" type="text" name="departmentTags" th:value="${#strings.listJoin(departmentTags, ',')}"
-                           class="tagify-outside" aria-describedby="departmentTagsHelp"/>
+                    <div id="introduceWhitelist" th:text="${introduceWhitelist}" hidden></div>
+                    <input id="introduceTags" type="text" name="introduceTags" th:value="${#strings.listJoin(introduceTags, ',')}"
+                           class="tagify-outside" aria-describedby="introduceTagsHelp"/>
                 </div>
             </div>
 
-
-
-
+            <div class="alert alert-warning" role="alert">
+                흥미 있는 분야의 태그를 등록하면 해당 분야의 동아리가 개설되었을 때 알림을 받을 수 있습니다.
+            </div>
+            <div class="row mb-5">
+                <div class="col-10">
+                    <div id="fieldWhitelist" th:text="${fieldWhitelist}" hidden></div>
+                    <input id="fieldTags" type="text" name="fieldTags" th:value="${#strings.listJoin(fieldTags, ',')}"
+                           class="tagify-outside" aria-describedby="introduceTagsHelp"/>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -50,48 +56,9 @@
 <footer th:replace="fragments.html :: footer"></footer>
 <script th:replace="fragments.html :: csrf-config"></script>
 <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
-<script type="application/javascript">
-    $(function() {
-        function tagRequest(url, tagTitle) {
-            $.ajax({
-                dataType: "json",
-                autocomplete: {
-                    enabled: true,
-                    rightKey: true,
-                },
-                contentType: "application/json; charset=utf-8",
-                method: "POST",
-                url: "/settings/departmentTags" + url,
-                data: JSON.stringify({'tagTitle': tagTitle})
-            }).done(function (data, status) {
-                console.log("${data} and status is ${status}");
-            });
-        }
+<script th:replace="fragments.html :: departmentTag"></script>
+<script th:replace="fragments.html :: introduceTag"></script>
+<script th:replace="fragments.html :: fieldTag"></script>
 
-        function onAdd(e) {
-            tagRequest("/add", e.detail.data.value);
-        }
-
-        function onRemove(e) {
-            tagRequest("/remove", e.detail.data.value);
-        }
-
-        var tagInput = document.querySelector("#departmentTags");
-        var tagify = new Tagify(tagInput, {
-            enforceWhitelist: true,
-            whitelist: JSON.parse(document.querySelector("#departmentWhitelist").textContent),
-            dropdown : {
-                position: "text",
-                enabled: 0 // suggest tags after a single character input
-            } // map tags
-        });
-        tagify.on("add", onAdd);
-        tagify.on("remove", onRemove);
-        // add a class to Tagify's input element
-        tagify.DOM.input.classList.add('form-control');
-        // re-place Tagify's input element outside of the  element (tagify.DOM.scope), just before it
-        tagify.DOM.scope.parentNode.insertBefore(tagify.DOM.input, tagify.DOM.scope);
-    });
-</script>
 </body>
 </html>

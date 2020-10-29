@@ -1,6 +1,7 @@
 package com.mj.ddingdong.account.domain;
 
 import com.mj.ddingdong.tag.domain.DepartmentTag;
+import com.mj.ddingdong.tag.domain.FieldTag;
 import com.mj.ddingdong.tag.domain.IntroduceTag;
 import lombok.*;
 
@@ -53,11 +54,10 @@ public class Account {
     }
 
     @ManyToMany
-    private Set<IntroduceTag> introduceTags = new HashSet<>(); ;       // TODO 소개 태그
+    private Set<IntroduceTag> introduceTags = new HashSet<>();        // TODO 소개 태그
 
-//    @ManyToMany
-//    private Set<FieldTag> FieldTags;       // TODO 동아리 분야 태그
-//
+    @ManyToMany
+    private Set<FieldTag> FieldTags = new HashSet<>();         // TODO 동아리 분야 태그
 
     @ManyToMany
     private Set<DepartmentTag> DepartmentTags = new HashSet<>();       // TODO 학부, 전공 태그

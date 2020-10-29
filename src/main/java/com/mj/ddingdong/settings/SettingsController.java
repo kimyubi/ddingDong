@@ -6,8 +6,12 @@ import com.mj.ddingdong.account.domain.Account;
 import com.mj.ddingdong.account.service.AccountService;
 import com.mj.ddingdong.main.CurrentAccount;
 import com.mj.ddingdong.tag.domain.DepartmentTag;
+import com.mj.ddingdong.tag.domain.FieldTag;
+import com.mj.ddingdong.tag.domain.IntroduceTag;
 import com.mj.ddingdong.tag.form.TagForm;
 import com.mj.ddingdong.tag.repository.DepartmentTagRepository;
+import com.mj.ddingdong.tag.repository.FieldTagRepository;
+import com.mj.ddingdong.tag.repository.IntroduceTagRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +34,8 @@ public class SettingsController {
     private final AccountService accountService;
     private final DepartmentTagRepository departmentTagRepository;
     private final ObjectMapper objectMapper;
+    private final IntroduceTagRepository introduceTagRepository;
+    private final FieldTagRepository fieldTagRepository;
 
     @GetMapping("/settings/tags")
     public String getTagsView(@CurrentAccount Account account, Model model) throws JsonProcessingException {
@@ -37,9 +43,19 @@ public class SettingsController {
 
         Set<DepartmentTag> departmentTags = accountService.getDepartmentTags(account);
         model.addAttribute("departmentTags",departmentTags.stream().map(DepartmentTag :: getTitle).collect(Collectors.toList()));
-
         List<String> allDepartmentTags = departmentTagRepository.findAll().stream().map(DepartmentTag :: getTitle).collect(Collectors.toList());
         model.addAttribute("departmentWhitelist", objectMapper.writeValueAsString(allDepartmentTags));
+
+
+        Set<IntroduceTag> introduceTags = accountService.getIntroduceTags(account);
+        model.addAttribute("introduceTags",introduceTags.stream().map(IntroduceTag :: getTitle).collect(Collectors.toList()));
+        List<String> allIntroduceTags = introduceTagRepository.findAll().stream().map(IntroduceTag :: getTitle).collect(Collectors.toList());
+        model.addAttribute("introduceWhitelist", objectMapper.writeValueAsString(allIntroduceTags));
+
+        Set<FieldTag> fieldTags = accountService.getFieldTags(account);
+        model.addAttribute("fieldTags",fieldTags.stream().map(FieldTag :: getTitle).collect(Collectors.toList()));
+        List<String> allfieldTags = fieldTagRepository.findAll().stream().map(FieldTag :: getTitle).collect(Collectors.toList());
+        model.addAttribute("fieldWhitelist", objectMapper.writeValueAsString(allfieldTags));
 
         return "settings/tags";
     }
@@ -66,6 +82,56 @@ public class SettingsController {
         }
 
         accountService.removeDepartmentTag(account, departmentTag);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/settings/introduceTags/add")
+    @ResponseBody
+    public ResponseEntity addIntroduceTags(@CurrentAccount Account account, Model model, @RequestBody TagForm tagForm){
+        model.addAttribute(account);
+        IntroduceTag introduceTag = introduceTagRepository.findByTitle(tagForm.getTagTitle());
+        if (introduceTag == null) {
+            introduceTag = IntroduceTag.builder().title(tagForm.getTagTitle()).build();
+            introduceTagRepository.save(introduceTag);
+        }
+        accountService.addIntroduceTag(account, introduceTag);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/settings/introduceTags/remove")
+    @ResponseBody
+    public ResponseEntity removeIntroduceTagsTags(@CurrentAccount Account account, Model model, @RequestBody TagForm tagForm){
+        model.addAttribute(account);
+        IntroduceTag introduceTag = introduceTagRepository.findByTitle(tagForm.getTagTitle());
+        if (introduceTag == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        accountService.removeIntroduceTag(account, introduceTag);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/settings/fieldTags/add")
+    @ResponseBody
+    public ResponseEntity addFieldTags(@CurrentAccount Account account, Model model, @RequestBody TagForm tagForm){
+        model.addAttribute(account);
+        FieldTag fieldTag = fieldTagRepository.findByTitle(tagForm.getTagTitle());
+        if (fieldTag == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        accountService.addFieldTag(account, fieldTag);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/settings/fieldTags/remove")
+    @ResponseBody
+    public ResponseEntity removeFieldTags(@CurrentAccount Account account, Model model, @RequestBody TagForm tagForm){
+        model.addAttribute(account);
+        FieldTag fieldTag = fieldTagRepository.findByTitle(tagForm.getTagTitle());
+        if (fieldTag == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        accountService.removeFieldTag(account, fieldTag);
         return ResponseEntity.ok().build();
     }
 

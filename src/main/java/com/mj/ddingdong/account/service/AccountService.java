@@ -6,6 +6,8 @@ import com.mj.ddingdong.account.form.SignUpForm;
 import com.mj.ddingdong.account.repository.AccountRepository;
 import com.mj.ddingdong.profiles.form.ProfileForm;
 import com.mj.ddingdong.tag.domain.DepartmentTag;
+import com.mj.ddingdong.tag.domain.FieldTag;
+import com.mj.ddingdong.tag.domain.IntroduceTag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -87,5 +89,35 @@ public class AccountService implements UserDetailsService {
     public void removeDepartmentTag(Account account, DepartmentTag departmentTag) {
         Optional<Account> byId = accountRepository.findById(account.getId());
         byId.ifPresent(a -> a.getDepartmentTags().remove(departmentTag));
+    }
+
+    public void addIntroduceTag(Account account, IntroduceTag introduceTag) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        byId.ifPresent(a -> a.getIntroduceTags().add(introduceTag));
+    }
+
+    public void removeIntroduceTag(Account account, IntroduceTag introduceTag) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        byId.ifPresent(a -> a.getIntroduceTags().remove(introduceTag));
+    }
+
+    public Set<IntroduceTag> getIntroduceTags(Account account) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        return byId.orElseThrow().getIntroduceTags();
+    }
+
+    public Set<FieldTag> getFieldTags(Account account) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        return byId.orElseThrow().getFieldTags();
+    }
+
+    public void addFieldTag(Account account, FieldTag fieldTag) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        byId.ifPresent(a -> a.getFieldTags().add(fieldTag));
+    }
+
+    public void removeFieldTag(Account account, FieldTag fieldTag) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        byId.ifPresent(a -> a.getFieldTags().remove(fieldTag));
     }
 }
