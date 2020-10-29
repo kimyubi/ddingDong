@@ -1,11 +1,13 @@
 package com.mj.ddingdong.account.domain;
 
+import com.mj.ddingdong.tag.domain.DepartmentTag;
 import lombok.*;
 
 import javax.persistence.*;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Getter @Setter @EqualsAndHashCode(of = "id")
@@ -54,8 +56,9 @@ public class Account {
 //    @ManyToMany
 //    private Set<FieldTag> FieldTags;       // TODO 동아리 분야 태그
 //
-//    @ManyToMany
-//    private Set<DepartmentTag> DepartmentTags;       // TODO 학부 태그
+
+    @ManyToMany
+    private Set<DepartmentTag> DepartmentTags;       // TODO 학부, 전공 태그
 
 
 }
