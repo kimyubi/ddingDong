@@ -28,6 +28,14 @@ public class SignUpValidator implements Validator {
             errors.rejectValue("nickname","wrong.nickname","이미 사용중인 닉네임입니다.");
         }
 
+        if(signUpForm.getSignUpId().indexOf(" ") != -1){
+            errors.rejectValue("signUpId","wrong.signUpId","공백은 사용할 수 없습니다.");
+        }
+
+        if(signUpForm.getName().indexOf(" ") != -1){
+            errors.rejectValue("name","wrong.name","공백은 사용할 수 없습니다.");
+        }
+
         if(signUpForm.getNickname().indexOf(" ") != -1){
             errors.rejectValue("nickname","wrong.nickname","공백은 사용할 수 없습니다.");
         }

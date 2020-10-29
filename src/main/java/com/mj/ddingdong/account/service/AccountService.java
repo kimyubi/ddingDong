@@ -5,7 +5,9 @@ import com.mj.ddingdong.account.domain.UserAccount;
 import com.mj.ddingdong.account.form.SignUpForm;
 import com.mj.ddingdong.account.repository.AccountRepository;
 import com.mj.ddingdong.main.CurrentAccount;
+import com.mj.ddingdong.profiles.form.ProfileForm;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,6 +28,7 @@ public class AccountService implements UserDetailsService {
 
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper = new ModelMapper();
 
     public Account signUp(SignUpForm signUpForm) {
         Account newAccount = saveAccount(signUpForm);
@@ -62,5 +65,10 @@ public class AccountService implements UserDetailsService {
         }
 
         return new UserAccount(account);
+    }
+
+    public void updateProfile(Account account, ProfileForm profileForm) {
+        modelMapper.map(profileForm,account);
+        accountRepository.save(account);
     }
 }
