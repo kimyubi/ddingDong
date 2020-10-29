@@ -5,6 +5,7 @@ import com.mj.ddingdong.account.domain.UserAccount;
 import com.mj.ddingdong.account.form.SignUpForm;
 import com.mj.ddingdong.account.repository.AccountRepository;
 import com.mj.ddingdong.profiles.form.ProfileForm;
+import com.mj.ddingdong.settings.form.NotificationForm;
 import com.mj.ddingdong.tag.domain.DepartmentTag;
 import com.mj.ddingdong.tag.domain.FieldTag;
 import com.mj.ddingdong.tag.domain.IntroduceTag;
@@ -119,5 +120,10 @@ public class AccountService implements UserDetailsService {
     public void removeFieldTag(Account account, FieldTag fieldTag) {
         Optional<Account> byId = accountRepository.findById(account.getId());
         byId.ifPresent(a -> a.getFieldTags().remove(fieldTag));
+    }
+
+    public void updateNotification(Account account, NotificationForm notificationForm) {
+        modelMapper.map(notificationForm, account);
+        accountRepository.save(account);
     }
 }
