@@ -1,4 +1,4 @@
-package com.mj.ddingdong.Config;
+package com.mj.ddingdong.config;
 
 import com.mj.ddingdong.account.service.AccountService;
 import lombok.RequiredArgsConstructor;

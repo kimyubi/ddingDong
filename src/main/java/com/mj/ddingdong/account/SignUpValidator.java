@@ -28,5 +28,13 @@ public class SignUpValidator implements Validator {
             errors.rejectValue("nickname","wrong.nickname","이미 사용중인 닉네임입니다.");
         }
 
+        if(signUpForm.getNickname().indexOf(" ") != -1){
+            errors.rejectValue("nickname","wrong.nickname","공백은 사용할 수 없습니다.");
+        }
+
+        if(signUpForm.getPassword().indexOf(" ") != -1){
+            errors.rejectValue("password","wrong.password","공백은 사용할 수 없습니다.");
+        }
+
     }
 }

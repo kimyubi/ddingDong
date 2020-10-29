@@ -1,8 +1,9 @@
-package com.mj.ddingdong.profiles;
+package com.mj.ddingdong.profiles.controller;
 
 import com.mj.ddingdong.account.domain.Account;
 import com.mj.ddingdong.account.repository.AccountRepository;
 import com.mj.ddingdong.main.CurrentAccount;
+import com.mj.ddingdong.profiles.form.ProfileForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +26,13 @@ public class ProfilesController {
         model.addAttribute("account",account);
         model.addAttribute("byNickname",byNickname);
 
-
         return "profiles/view";
+    }
+
+    @GetMapping("/settings/profile")
+    public String prifileSettingView(@CurrentAccount Account account, Model model){
+        model.addAttribute(account);
+        model.addAttribute(new ProfileForm());
+        return "profiles/form";
     }
 }

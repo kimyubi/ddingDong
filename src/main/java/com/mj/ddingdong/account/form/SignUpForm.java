@@ -15,7 +15,6 @@ public class SignUpForm {
     private String name;
 
     @NotBlank
-    @Pattern(regexp = "\\S", message = "공백은 사용할 수 없습니다.")
     @Length(max = 20, message = "20자 이내로 입력하세요.")
     private String nickname;
 

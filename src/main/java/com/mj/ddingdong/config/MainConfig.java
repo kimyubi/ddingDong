@@ -1,4 +1,4 @@
-package com.mj.ddingdong.Config;
+package com.mj.ddingdong.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
