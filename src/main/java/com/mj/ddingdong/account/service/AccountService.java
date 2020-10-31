@@ -127,4 +127,8 @@ public class AccountService implements UserDetailsService {
         modelMapper.map(notificationForm, account);
         accountRepository.save(account);
     }
+
+    public boolean validateEmail(String email) {
+        return accountRepository.existsByEmail(email);
+    }
 }

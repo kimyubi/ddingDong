@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments.html :: head"></head>
+
+<body class="bg-light">
+
+<nav th:replace="fragments.html :: nav"></nav>
+<div class="container">
+    <div class="mt-5 mb-5 text-center">
+        <h2>계정 찾기</h2>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <div class="alert alert-light" role="alert">
+                <div class="py-3 text-center">
+                    <h4><strong th:text="${email}"></strong>로 계정 정보를 보냈습니다.</h4>
+                </div>
+                <div class="py-2 text-center">
+                    <h6 class="mb-3">해당 이메일을 통해 계정 정보를 확인 하시고,<br>
+                        비밀번호 변경이 필요하신 경우 해당 이메일을 통해 변경 가능합니다.
+                    </h6>
+                    <a class="btn btn-secondary mt-2 mb-2" th:href="@{/login}">로그인</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="fragments.html :: footer"></footer>
+
+</body>
+</html>

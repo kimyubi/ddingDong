@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head">
+<body>
+<div>
+    <h2 th:text="${title}">계정 찾기</h2>
+
+    <p>안녕하세요. <span th:text="${name}">김유비</span>님</p>
+    <p>
+        아이디 : <strong th:text="${signUpId}"></strong><br>
+        비밀번호 변경을 원하실 경우, 아래 링크를 통해 변경하실 수 있습니다.
+    </p>
+
+    <div>
+        <a th:href="${host + link}">비밀번호 변경하기</a>
+    </div>
+</div>
+
+<footer>
+    <small>ddingDong, 띵동&copy; 2020</small>
+</footer>
+</body>
+</html>

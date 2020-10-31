@@ -4,7 +4,9 @@ import com.mj.ddingdong.account.SignUpValidator;
 import com.mj.ddingdong.account.domain.Account;
 import com.mj.ddingdong.account.form.SignUpForm;
 import com.mj.ddingdong.account.service.AccountService;
+import com.mj.ddingdong.main.EmailForm;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -17,6 +19,7 @@ import javax.validation.Valid;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class AccountController {
 
     private final AccountService accountService;
@@ -36,6 +39,7 @@ public class AccountController {
         accountService.login(account);
         return "redirect:/";
     }
+
 
 
 

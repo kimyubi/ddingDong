@@ -17,14 +17,17 @@
                     <h4>이메일 주소를 입력해 주세요.</h4>
                 </div>
                 <div class="py-2 text-center">
+                    <h6 class="form-text text-danger" role="alert" th:if="${message}" th:text="${message}"></h6>
+
                     <h6 class="mb-3">회원 가입시 입력하신 이메일 주소를 입력하시면,<br>
                         해당 이메일로 아이디 및 비밀번호 변경 링크를 보내드립니다.</h6>
                     <div class="row justify-content-center">
                         <form class="col-sm-8"
-                              th:action="@{/find-account}" method="post">
+                              th:action="@{/find-account}" method="post" th:object="${emailForm}">
                             <div class="form-group">
-                                <input id="email" type="email"  class="form-control"
+                                <input id="email" type="email" th:field="*{email}" class="form-control"
                                        placeholder="이메일" required>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email Error</small>
                             </div>
                             <div class="row justify-content-center">
                                 <div class="form-group mr-2">
@@ -35,14 +38,12 @@
                                     <a class="btn btn-outline-secondary" href="#" th:href="@{/}">취소</a>
                                 </div>
                             </div>
-    <!--                        th:object="${signUpForm}"-->
-    <!--                        th:field="*{email}"-->
                         </form>
                     </div>
             </div>
         </div>
     </div>
-
+    </div>
 </div>
 
 <footer th:replace="fragments.html :: footer"></footer>

@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Getter @Setter @EqualsAndHashCode(of = "id")
@@ -52,6 +53,9 @@ public class Account {
 
     private int hagbeon;
 
+    private String token;
+
+
     public String getEncodedNickname() {
         return URLEncoder.encode(this.nickname, StandardCharsets.UTF_8);
     }
@@ -66,4 +70,7 @@ public class Account {
     private Set<DepartmentTag> DepartmentTags = new HashSet<>();       // TODO 학부, 전공 태그
 
 
+    public void generatedToken() {
+        this.token = UUID.randomUUID().toString();
+    }
 }
