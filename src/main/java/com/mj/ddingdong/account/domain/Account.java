@@ -32,6 +32,9 @@ public class Account {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    private String email;
+
     @Lob @Basic(fetch = FetchType.EAGER)
     private String profileImage;
 

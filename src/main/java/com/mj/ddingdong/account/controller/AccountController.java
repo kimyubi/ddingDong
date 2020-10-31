@@ -26,14 +26,7 @@ public class AccountController {
     public void initBinder(WebDataBinder webDataBinder){
         webDataBinder.addValidators(signUpValidator);
     }
-    
-    @GetMapping("/sign-up")
-    public String signUpview(Model model){
-        model.addAttribute(new SignUpForm());
 
-        return "account/sign-up";
-    }
-    
     @PostMapping("/sign-up")
     public String signUp(@Valid SignUpForm signUpForm, Errors errors){
         if (errors.hasErrors()) {
@@ -44,10 +37,7 @@ public class AccountController {
         return "redirect:/";
     }
 
-    @GetMapping("/login")
-    public String logIn(){
-        return "account/login";
-    }
+
 
 
 }

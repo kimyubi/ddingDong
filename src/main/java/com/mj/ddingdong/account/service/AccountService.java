@@ -45,6 +45,7 @@ public class AccountService implements UserDetailsService {
                 .signUpId(signUpForm.getSignUpId())
                 .name(signUpForm.getName())
                 .nickname(signUpForm.getNickname())
+                .email(signUpForm.getEmail())
                 .password(passwordEncoder.encode(signUpForm.getPassword()))
                 .signUpAsManager(signUpForm.isSignUpAsManager())
                 .signUpAt(LocalDateTime.now())
