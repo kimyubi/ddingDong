@@ -19,6 +19,12 @@
         </div>
     </div>
     <div class="row justify-content-center">
+        <div class="col-6">
+            <div th:if="${successUpdatePassword}" class="alert alert-warning" role="alert" th:text="${successUpdatePassword}">
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
         <form class="col-sm-6" th:action="@{/login}" method="post" novalidate>
             <div class="form-group">
                 <label for="username">아이디</label>

@@ -4,6 +4,7 @@ import com.mj.ddingdong.account.domain.Account;
 import com.mj.ddingdong.account.domain.UserAccount;
 import com.mj.ddingdong.account.form.SignUpForm;
 import com.mj.ddingdong.account.repository.AccountRepository;
+import com.mj.ddingdong.main.PasswordForm;
 import com.mj.ddingdong.profiles.form.ProfileForm;
 import com.mj.ddingdong.settings.form.NotificationForm;
 import com.mj.ddingdong.tag.domain.DepartmentTag;
@@ -34,6 +35,7 @@ public class AccountService implements UserDetailsService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper = new ModelMapper();
+
 
     public Account signUp(SignUpForm signUpForm) {
         Account newAccount = saveAccount(signUpForm);
@@ -130,5 +132,17 @@ public class AccountService implements UserDetailsService {
 
     public boolean validateEmail(String email) {
         return accountRepository.existsByEmail(email);
+    }
+
+    public boolean validateToken(String token) {
+        return accountRepository.existsByToken(token);
+    }
+
+
+    public void updatePassword(String token, PasswordForm passwordForm) {
+        Account account = accountRepository.findByToken(token);
+        account.setPassword(passwordEncoder.encode(passwordForm.getPassword()));
+        account.generatedToken();
+        accountRepository.save(account);
     }
 }
