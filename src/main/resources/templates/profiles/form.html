@@ -41,7 +41,7 @@
 
                         <div class="form-group">
                             <label for="hagbeon">학번</label>
-                            <input id="hagbeon" type="number" min="10" max="21" th:field="*{hagbeon}" class="form-control"
+                            <input id="hagbeon" type="number" th:value="*{hagbeon}" min="10" max="21" th:field="*{hagbeon}" class="form-control"
                                    aria-describedby="hagbeonHelp" required>
                             <small id="hagbeonHelp" class="form-text text-muted">
                                 학번을 선택해주세요.

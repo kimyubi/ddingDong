@@ -6,6 +6,7 @@ import com.mj.ddingdong.account.form.SignUpForm;
 import com.mj.ddingdong.account.repository.AccountRepository;
 import com.mj.ddingdong.main.PasswordForm;
 import com.mj.ddingdong.profiles.form.ProfileForm;
+import com.mj.ddingdong.settings.form.NicknameForm;
 import com.mj.ddingdong.settings.form.NotificationForm;
 import com.mj.ddingdong.tag.domain.DepartmentTag;
 import com.mj.ddingdong.tag.domain.FieldTag;
@@ -76,6 +77,7 @@ public class AccountService implements UserDetailsService {
     }
 
     public void updateProfile(Account account, ProfileForm profileForm) {
+        account = accountRepository.findBySignUpId(account.getSignUpId());
         modelMapper.map(profileForm,account);
         accountRepository.save(account);
     }
@@ -144,5 +146,18 @@ public class AccountService implements UserDetailsService {
         account.setPassword(passwordEncoder.encode(passwordForm.getPassword()));
         account.generatedToken();
         accountRepository.save(account);
+    }
+
+    public Account updateNickname(Account account, NicknameForm nicknameForm) {
+        Account bySignupId = accountRepository.findBySignUpId(account.getSignUpId());
+        bySignupId.setNickname(nicknameForm.getNickname());
+        accountRepository.save(bySignupId);
+        login(bySignupId);
+        return bySignupId;
+    }
+
+    public void deleteAccount(Account account) {
+        Account bySignupId = accountRepository.findBySignUpId(account.getSignUpId());
+        accountRepository.delete(bySignupId);
     }
 }

@@ -18,6 +18,12 @@ public class UpdatePasswordValidator implements Validator {
         if(!passwordForm.getPassword().equals(passwordForm.getConfirmPassword())){
             errors.rejectValue("confirmPassword","wrong.confirmPassword","입력하신 비밀번호와 일치하지 않습니다.");
         }
+        if(passwordForm.getPassword().indexOf(" ") != -1){
+            errors.rejectValue("password","wrong.password","공백은 사용할 수 없습니다.");
+        }
+
+
+
 
     }
 }

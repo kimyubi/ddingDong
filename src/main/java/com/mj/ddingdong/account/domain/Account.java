@@ -34,13 +34,16 @@ public class Account {
     private String password;
 
     @Column(nullable = false)
+    
     private String email;
 
     @Lob @Basic(fetch = FetchType.EAGER)
+    @Column(nullable = true)
     private String profileImage;
 
     private LocalDateTime signUpAt;
 
+    @Column(nullable = false)
     private String shortIntroduce;
 
     private boolean circlesCreateNotification;
@@ -60,13 +63,13 @@ public class Account {
         return URLEncoder.encode(this.nickname, StandardCharsets.UTF_8);
     }
 
-    @ManyToMany
+    @ManyToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE})
     private Set<IntroduceTag> introduceTags = new HashSet<>();        // TODO 소개 태그
 
-    @ManyToMany
+    @ManyToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE})
     private Set<FieldTag> FieldTags = new HashSet<>();         // TODO 동아리 분야 태그
 
-    @ManyToMany
+    @ManyToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE})
     private Set<DepartmentTag> DepartmentTags = new HashSet<>();       // TODO 학부, 전공 태그
 
 
