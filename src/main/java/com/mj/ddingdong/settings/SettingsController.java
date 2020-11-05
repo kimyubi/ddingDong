@@ -182,18 +182,16 @@ public class SettingsController {
             model.addAttribute(account);
             return "settings/account";
         }
-        Account newAccount = accountService.updateNickname(account,nicknameForm);
+        accountService.updateNickname(account,nicknameForm);
         rttr.addFlashAttribute("message","닉네임이 변경되었습니다.");
-        model.addAttribute("account",newAccount);
-
         return "redirect:/settings/account";
     }
 
-    @PostMapping("/delete-account")
-    public String deleteAccount(@CurrentAccount Account account,Model model){
-        accountService.deleteAccount(account);
-        return "redirect:/";
-    }
+//    @PostMapping("/delete-account")
+//    public String deleteAccount(@CurrentAccount Account account,Model model){
+//        accountService.deleteAccount(account);
+//        return "redirect:/";
+//    }
 
 
 }

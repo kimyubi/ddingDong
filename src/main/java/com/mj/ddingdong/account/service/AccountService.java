@@ -77,7 +77,6 @@ public class AccountService implements UserDetailsService {
     }
 
     public void updateProfile(Account account, ProfileForm profileForm) {
-        account = accountRepository.findBySignUpId(account.getSignUpId());
         modelMapper.map(profileForm,account);
         accountRepository.save(account);
     }
@@ -135,7 +134,6 @@ public class AccountService implements UserDetailsService {
     public boolean validateEmail(String email) {
         return accountRepository.existsByEmail(email);
     }
-
     public boolean validateToken(String token) {
         return accountRepository.existsByToken(token);
     }
@@ -148,12 +146,15 @@ public class AccountService implements UserDetailsService {
         accountRepository.save(account);
     }
 
-    public Account updateNickname(Account account, NicknameForm nicknameForm) {
-        Account bySignupId = accountRepository.findBySignUpId(account.getSignUpId());
-        bySignupId.setNickname(nicknameForm.getNickname());
-        accountRepository.save(bySignupId);
-        login(bySignupId);
-        return bySignupId;
+    public void updateNickname(Account account, NicknameForm nicknameForm) {
+//        Account bySignupId = accountRepository.findBySignUpId(account.getSignUpId());
+//        bySignupId.setNickname(nicknameForm.getNickname());
+//        accountRepository.save(bySignupId);
+//        login(bySignupId);
+//        return bySignupId;
+        account.setNickname(nicknameForm.getNickname());
+        accountRepository.save(account);
+        login(account);
     }
 
     public void deleteAccount(Account account) {

@@ -39,10 +39,11 @@
             </div>
             <div class="alert alert-danger ml-3 mt-3 mb-3" role="alert">
                 계정을 삭제하게 되면 다시 복구할 수 없습니다. 신중하게 삭제해주세요.
+                <small class="form-text text-muted">현재는 이 기능을 지원하지 않습니다.</small>
             </div>
             <form class="col-sm-10" th:action="@{/delete-account}" action="/delete-account" method="post">
                 <button id="deleteaccount" class="btn btn-danger mb-3" type="submit"
-                        aria-describedby="submitHelp">계정 삭제</button>
+                        aria-describedby="submitHelp" disabled>계정 삭제</button>
             </form>
 
 

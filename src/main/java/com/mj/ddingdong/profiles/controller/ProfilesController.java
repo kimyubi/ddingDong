@@ -62,7 +62,6 @@ public class ProfilesController {
         }
         accountService.updateProfile(account,profileForm);
         rttr.addFlashAttribute("message","프로필이 업데이트 되었습니다.");
-        rttr.addFlashAttribute("profileForm",profileForm);
         return "redirect:/settings/profile";
     }
 }
