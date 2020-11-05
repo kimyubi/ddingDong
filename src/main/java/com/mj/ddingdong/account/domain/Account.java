@@ -43,7 +43,6 @@ public class Account {
 
     private LocalDateTime signUpAt;
 
-    @Column(nullable = false)
     private String shortIntroduce;
 
     private boolean circlesCreateNotification;

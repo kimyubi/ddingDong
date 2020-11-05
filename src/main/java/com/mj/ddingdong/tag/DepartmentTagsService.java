@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class DepartmentTagService {
+public class DepartmentTagsService {
 
     private final DepartmentTagRepository departmentTagRepository;
 

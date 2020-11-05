@@ -47,7 +47,25 @@ public class Circle {
 
     private String ownUrl;
 
+    @Column(nullable = true)
+    private boolean recruiting;
+
     public String getEncodedPath(String path) throws UnsupportedEncodingException {
         return URLEncoder.encode(path, "utf-8");
     }
+
+    public String[] getOwnUrl() throws UnsupportedEncodingException {
+        return this.ownUrl.replace(" ","").split(",");
+    }
+
+    public boolean isMember(Account account){
+        for(Account member : this.getMembers()){
+            if(member.getId().equals(account.getId())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 }
