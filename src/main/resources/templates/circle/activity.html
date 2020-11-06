@@ -39,7 +39,7 @@
                             <tr th:each="activity : ${activities}">
                                 <th th:text="${activity.getId()}">Mark</th>
                                 <td colspan="10">
-                                    <a style="color: black" th:text="${activity.getTitle()}" th:href="@{'../'+${circle.path}+'/activity/detail?id='+${activity.getId()}}"></a>
+                                    <a style="color: black" th:text="${activity.getTitle()}" th:href="@{'../'+${circle.path}+'/activity/detail?id='+${activity.getId()}+'&page='+${activities.getNumber()}}"></a>
                                 </td>
                                 <td colspan="5" th:text="${manager.name}">@mdo</td>
                                 <td  colspan="10" th:text="${#temporals.format(activity.getWritedTime(),'yyyy-MM-dd HH:mm')}"></td>

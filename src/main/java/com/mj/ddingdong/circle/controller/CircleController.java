@@ -99,6 +99,7 @@ public class CircleController {
 
         Page<Activity> activities = activityRepository.findByCircle(circle,pageable);
         model.addAttribute("activities",activities);
+        model.addAttribute("pageable",pageable);
 
         return "circle/activity";
     }
@@ -132,17 +133,19 @@ public class CircleController {
     }
 
     @GetMapping("/circle/{path}/activity/detail")
-    public String viewActivityDetail(@CurrentAccount Account account, Model model, @PathVariable String path, String id, Pageable pageable){
+    public String viewActivityDetail(@CurrentAccount Account account, Model model, @PathVariable String path, @RequestParam("id") String id, @RequestParam("page") int page){
         Circle circle = circleService.validatePath(path);
         model.addAttribute(account);
         model.addAttribute(circle);
 
-        if(circleService.circleManagedByManager(circle,account)) {
+        if(circleService.circleManagedByManager(circle,account)){
             model.addAttribute("isManager",account.isRecognizedManager() && account.isRecognizedManager());
+
         }
 
         Optional<Activity> activity = activityRepository.findById(Long.valueOf(id));
-        model.addAttribute("activity",activity.orElseThrow().getCircle());
+        model.addAttribute("activity",activity.get());
+        model.addAttribute("page",page);
 
         activityService.plusViewCount(circle,activity);
 

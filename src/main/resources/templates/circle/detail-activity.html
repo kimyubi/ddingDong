@@ -4,30 +4,26 @@
 <head th:replace="fragments.html :: head"></head>
 
 <body class="bg-light">
-
 <nav th:replace="fragments.html :: nav"></nav>
 <div th:replace="fragments.html :: detail-top"></div>
-<div class="row justify-content-center mb-5 shadow-sm">
+<div class="row justify-content-center shadow-sm">
     <div class="card col-10">
         <div class="card-header">
             <div th:replace="fragments.html :: circle-menu('activity')"></div>
         </div>
         <div class="card-body">
-
-            <div class="row justify-content-center mt-2">
+            <div class="row justify-content-center mt-1">
                 <div class="col-12">
                     <div class="alert alert-light" role="alert">
-                        <div class="py-3 text-center">
-                            <h3><strong>글 작성</strong></h3>
+                        <div class="text-center">
+                            <h3><strong th:text="${activity.title}"></strong></h3>
                         </div>
                         <div class="row justify-content-center" >
-                            <form class="col-sm-10" action="#"
-                                  th:action="@{'../activity/write'}" th:object="${activityForm}" method="post">
+                            <form class="col-sm-12" action="#">
                                 <div class="form-group">
                                     <label for="title">제목</label>
-                                    <input id="title" type="text" th:field="*{title}" class="form-control"
-                                           placeholder="게시글의 제목을 입력하세요." required>
-                                    <small class="form-text text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">title Error</small>
+                                    <input id="title" type="text"  class="form-control"
+                                           disabled th:value="${activity.title}">
                                 </div>
 
                                 <div class="form-group" th:each="manager : ${circle.getManagers()}">
@@ -37,17 +33,19 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="content">내용</label>
-                                    <textarea id="content" type="textarea" th:field="*{content}" class="editor form-control"
-                                              aria-describedby="fullDescriptionHelp" required></textarea>
-                                    <small id="contentHelp" class="form-text text-muted">
-                                        동아리의 활동 모습을 궁금해하는 회원들을 위해 동아리 활동 및 행사 등을 사진 및 글로 소개해주세요.
-                                    </small>
-                                    <small class="form-text text-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">content Error</small>
+                                    <label for="writedTime">작성일</label>
+                                    <input id="writedTime" type="text" class="form-control"
+                                           disabled th:value="${#temporals.format(activity.getWritedTime(),'yyyy-MM-dd HH:mm')}">
+                                </div>
+                                <div class="form-group">
+                                    <label>내용</label>
+                                    <div id="detailContent" role="alert" class="text-center"><br>
+                                    <span th:utext="${activity.content}"></span>
+                                    </div>
                                 </div>
                                 <div class="form-group text-center mt-4">
-                                    <input type="submit" class="btn btn-dark px-5 py-2 mr-3" value="작성하기">
-                                    <a th:href="@{'../activity'}" class="btn btn-secondary px-5 py-2">취소하기</a>
+                                    <input th:if="${isManager}" type="submit" class="btn btn-dark px-5 py-2 mr-3" value="수정하기">
+                                    <a th:href="@{'../activity?page='+ ${page}}" class="btn btn-secondary px-5 py-2">목록</a>
                                 </div>
                             </form>
                         </div>
@@ -57,7 +55,6 @@
         </div>
     </div>
 </div>
-<footer th:replace="fragments.html :: footer"></footer>
-<div th:replace="fragments.html :: editor-activity"></div>
+
 </body>
 </html>
