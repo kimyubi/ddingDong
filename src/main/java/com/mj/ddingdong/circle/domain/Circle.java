@@ -50,7 +50,7 @@ public class Circle {
     @Column(nullable = true)
     private boolean recruiting;
 
-    @OneToMany
+    @OneToMany(mappedBy = "circle")
     private Set<Activity> activities;
 
     public String getEncodedPath(String path) throws UnsupportedEncodingException {

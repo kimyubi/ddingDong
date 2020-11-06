@@ -2,25 +2,34 @@ package com.mj.ddingdong.circle.controller;
 
 import com.mj.ddingdong.account.domain.Account;
 import com.mj.ddingdong.circle.CircleFormValidator;
+import com.mj.ddingdong.circle.domain.Activity;
 import com.mj.ddingdong.circle.domain.Circle;
 import com.mj.ddingdong.circle.form.ActivityForm;
 import com.mj.ddingdong.circle.form.CircleForm;
+import com.mj.ddingdong.circle.repository.ActivityRepository;
 import com.mj.ddingdong.circle.repository.CircleRepository;
+import com.mj.ddingdong.circle.service.ActivityService;
 import com.mj.ddingdong.circle.service.CircleService;
 import com.mj.ddingdong.main.CurrentAccount;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Controller
 @RequiredArgsConstructor
@@ -29,6 +38,9 @@ public class CircleController {
     private final CircleFormValidator circleFormValidator;
     private final CircleService circleService;
     private final CircleRepository circleRepository;
+    private final ModelMapper modelMapper = new ModelMapper();
+    private final ActivityRepository activityRepository;
+    private final ActivityService activityService;
 
     @InitBinder("circleForm")
     public void initBinder(WebDataBinder webDataBinder){
@@ -77,11 +89,17 @@ public class CircleController {
     }
 
     @GetMapping("/circle/{path}/activity")
-    public String circleActivitiy(@CurrentAccount Account account, Model model, @PathVariable String path){
+    public String circleActivitiy(@CurrentAccount Account account, Model model, @PathVariable String path,
+                                  @PageableDefault(size = 10) Pageable pageable){
         Circle circle = circleService.validatePath(path);
+
         model.addAttribute(account);
         model.addAttribute(circle);
         model.addAttribute("isManager",account.isRecognizedManager() && account.isRecognizedManager());
+
+        Page<Activity> activities = activityRepository.findByCircle(circle,pageable);
+        model.addAttribute("activities",activities);
+
         return "circle/activity";
     }
 
@@ -94,6 +112,42 @@ public class CircleController {
             model.addAttribute(new ActivityForm());
         }
         return "circle/write";
+    }
+
+    @PostMapping("/circle/{path}/activity/write")
+    public String saveCircleActivity(@CurrentAccount Account account, Model model, @PathVariable String path,
+                                     @Valid ActivityForm activityForm, Errors errors, RedirectAttributes rttr) throws UnsupportedEncodingException {
+        Circle circle = circleRepository.findByPath(path);
+        if(errors.hasErrors()){
+            model.addAttribute(account);
+            model.addAttribute(circle);
+            return "circle/write";
+        }
+
+        circleService.saveActivity(circle,modelMapper.map(activityForm, Activity.class));
+        rttr.addFlashAttribute("success","게시글이 정상적으로 등록되었습니다.");
+        rttr.addFlashAttribute("activities",circle.getActivities());
+
+        return "redirect:/circle/"+circle.getEncodedPath(path)+"/activity";
+    }
+
+    @GetMapping("/circle/{path}/activity/detail")
+    public String viewActivityDetail(@CurrentAccount Account account, Model model, @PathVariable String path, String id, Pageable pageable){
+        Circle circle = circleService.validatePath(path);
+        model.addAttribute(account);
+        model.addAttribute(circle);
+
+        if(circleService.circleManagedByManager(circle,account)) {
+            model.addAttribute("isManager",account.isRecognizedManager() && account.isRecognizedManager());
+        }
+
+        Optional<Activity> activity = activityRepository.findById(Long.valueOf(id));
+        model.addAttribute("activity",activity.orElseThrow().getCircle());
+
+        activityService.plusViewCount(circle,activity);
+
+        return "circle/detail-activity";
+
     }
 
 

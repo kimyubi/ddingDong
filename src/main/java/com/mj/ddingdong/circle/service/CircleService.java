@@ -1,14 +1,18 @@
 package com.mj.ddingdong.circle.service;
 
 import com.mj.ddingdong.account.domain.Account;
+import com.mj.ddingdong.circle.domain.Activity;
 import com.mj.ddingdong.circle.domain.Circle;
 import com.mj.ddingdong.circle.form.CircleForm;
+import com.mj.ddingdong.circle.repository.ActivityRepository;
 import com.mj.ddingdong.circle.repository.CircleRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 
 @Service
 @Transactional
@@ -17,6 +21,7 @@ public class CircleService {
 
     private final CircleRepository circleRepository;
     private final ModelMapper modelMapper = new ModelMapper();
+    private final ActivityRepository activityRepository;
 
     public Circle saveCircle(Account account, CircleForm circleForm) {
         validateAccountManager(account);
@@ -53,5 +58,13 @@ public class CircleService {
             }
         }
         throw new AccessDeniedException("해당 기능을 이용하실 수 없습니다.");
+    }
+
+    public void saveActivity(Circle circle, Activity activity) {
+        activity.setWritedTime(LocalDateTime.now());
+        activity.setCircle(circle);
+        activityRepository.save(activity);
+
+        circle.getActivities().add(activity);
     }
 }

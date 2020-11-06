@@ -26,4 +26,7 @@ public class Activity {
     private String content;
 
     private LocalDateTime writedTime;
+
+    @ManyToOne
+    private Circle circle;
 }
