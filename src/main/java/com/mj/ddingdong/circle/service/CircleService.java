@@ -19,17 +19,11 @@ public class CircleService {
     private final ModelMapper modelMapper = new ModelMapper();
 
     public Circle saveCircle(Account account, CircleForm circleForm) {
-        checkManager(account);
+        validateAccountManager(account);
         Circle circle = modelMapper.map(circleForm, Circle.class);
         circle.getManagers().add(account);
 
         return circleRepository.save(circle);
-    }
-
-    private void checkManager(Account account) {
-        if(!(account.isRecognizedManager()&& account.isRecognizedManager())){
-            throw new AccessDeniedException("해당 기능을 사용할 수 없습니다.");
-        }
     }
 
     public Circle validatePath(String path) {
@@ -40,9 +34,24 @@ public class CircleService {
         return circle;
     }
 
-    public void validateAccount(Account account, Circle circle) {
+    public void validateAccountMemberOrManager(Account account, Circle circle) {
         if(!((account.isRecognizedManager()&&account.isSignUpAsManager())|| circle.isMember(account))){
             throw new AccessDeniedException("해당 기능을 이용하실 수 없습니다.");
         }
+    }
+
+    public void validateAccountManager(Account account) {
+        if(!(account.isRecognizedManager()&&account.isRecognizedManager())){
+            throw new AccessDeniedException("해당 기능을 이용하실 수 없습니다.");
+        }
+    }
+
+    public boolean circleManagedByManager(Circle circle, Account account) {
+        for(Account manager : circle.getManagers()){
+            if(manager.getId().equals(account.getId())){
+                return true;
+            }
+        }
+        throw new AccessDeniedException("해당 기능을 이용하실 수 없습니다.");
     }
 }

@@ -3,6 +3,7 @@ package com.mj.ddingdong.circle.controller;
 import com.mj.ddingdong.account.domain.Account;
 import com.mj.ddingdong.circle.CircleFormValidator;
 import com.mj.ddingdong.circle.domain.Circle;
+import com.mj.ddingdong.circle.form.ActivityForm;
 import com.mj.ddingdong.circle.form.CircleForm;
 import com.mj.ddingdong.circle.repository.CircleRepository;
 import com.mj.ddingdong.circle.service.CircleService;
@@ -39,9 +40,7 @@ public class CircleController {
         model.addAttribute(account);
         model.addAttribute(new CircleForm());
 
-        if(!(account.isRecognizedManager()&&account.isRecognizedManager())){
-            throw new AccessDeniedException("해당 기능을 이용하실 수 없습니다.");
-        }
+        circleService.validateAccountManager(account);
         return "circle/form";
     };
 
@@ -69,7 +68,7 @@ public class CircleController {
     @GetMapping("/circle/{path}/member")
     public String circleMembers(@CurrentAccount Account account, Model model, @PathVariable String path){
         Circle circle = circleService.validatePath(path);
-        circleService.validateAccount(account,circle);
+        circleService.validateAccountMemberOrManager(account,circle);
 
         model.addAttribute(account);
         model.addAttribute(circle);
@@ -83,8 +82,18 @@ public class CircleController {
         model.addAttribute(account);
         model.addAttribute(circle);
         model.addAttribute("isManager",account.isRecognizedManager() && account.isRecognizedManager());
-
         return "circle/activity";
+    }
+
+    @GetMapping("/circle/{path}/activity/write")
+    public String createCircleActivity(@CurrentAccount Account account, Model model, @PathVariable String path){
+        Circle circle = circleService.validatePath(path);
+        if(circleService.circleManagedByManager(circle,account)){
+            model.addAttribute(account);
+            model.addAttribute(circle);
+            model.addAttribute(new ActivityForm());
+        }
+        return "circle/write";
     }
 
 

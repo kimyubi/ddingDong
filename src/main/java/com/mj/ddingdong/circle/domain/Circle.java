@@ -50,6 +50,9 @@ public class Circle {
     @Column(nullable = true)
     private boolean recruiting;
 
+    @OneToMany
+    private Set<Activity> activities;
+
     public String getEncodedPath(String path) throws UnsupportedEncodingException {
         return URLEncoder.encode(path, "utf-8");
     }
