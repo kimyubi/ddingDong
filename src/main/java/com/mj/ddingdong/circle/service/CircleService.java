@@ -31,4 +31,18 @@ public class CircleService {
             throw new AccessDeniedException("해당 기능을 사용할 수 없습니다.");
         }
     }
+
+    public Circle validatePath(String path) {
+        Circle circle = circleRepository.findByPath(path);
+        if(circle == null){
+            throw new IllegalArgumentException(path +"에 해당하는 동아리가 존재하지 않습니다.");
+        }
+        return circle;
+    }
+
+    public void validateAccount(Account account, Circle circle) {
+        if(!((account.isRecognizedManager()&&account.isSignUpAsManager())|| circle.isMember(account))){
+            throw new AccessDeniedException("해당 기능을 이용하실 수 없습니다.");
+        }
+    }
 }

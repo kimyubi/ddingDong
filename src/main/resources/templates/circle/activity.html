@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments.html :: head"></head>
+
+<body class="bg-light">
+
+<nav th:replace="fragments.html :: nav"></nav>
+<div th:replace="fragments.html :: detail-top"></div>
+<div class="row justify-content-center mb-5">
+    <div class="card text-center col-10">
+        <div class="card-header">
+            <div th:replace="fragments.html :: circle-menu('activity')"></div>
+        </div>
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="mt-4 ml-5 px-3 col-sm-11 text-right justify-content-end">
+                    <button th:if="${isManager}" type="button" class="btn btn-dark btn-sm">
+                        <i class="fa fa-pencil-square-o mr-1" aria-hidden="true"></i>
+                        작성하기
+                    </button>
+                </div>
+            </div>
+            <div class="row mt-4 ml-4 mr-4">
+                <div class="col-3">
+                    <div class="card mb-5 shadow-sm">
+                        <img class="card-img-top" src="/images/logo.png">
+                        <div class="card-body">
+                            <a class="text-decoration-none">
+                                <h5 class="card-title context"></h5>
+                            </a>
+                            <p class="card-text">Short description</p>
+                            <p class="card-text context">
+                                <span class="font-weight-light text-monospace badge badge-pill badge-info mr-3">
+                                    <a class="text-decoration-none text-white">
+                                        <i class="fa fa-tag"></i> <span>Tag</span>
+                                    </a>
+                                </span>
+                                <span class="font-weight-light text-monospace badge badge-primary mr-3">
+                                    <a class="text-decoration-none text-white">
+                                        <i class="fa fa-globe"></i> <span class="text-white">City</span>
+                                    </a>
+                                </span>
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="fa fa-user-circle"></i>
+                                    <span></span>명
+                                </small>
+                                <small class="text-muted date">9 mins</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card mb-4 shadow-sm">
+                        <img class="card-img-top" src="/images/logo.png">
+                        <div class="card-body">
+                            <a class="text-decoration-none">
+                                <h5 class="card-title context"></h5>
+                            </a>
+                            <p class="card-text">Short description</p>
+                            <p class="card-text context">
+                                <span class="font-weight-light text-monospace badge badge-pill badge-info mr-3">
+                                    <a class="text-decoration-none text-white">
+                                        <i class="fa fa-tag"></i> <span>Tag</span>
+                                    </a>
+                                </span>
+                                <span class="font-weight-light text-monospace badge badge-primary mr-3">
+                                    <a class="text-decoration-none text-white">
+                                        <i class="fa fa-globe"></i> <span class="text-white">City</span>
+                                    </a>
+                                </span>
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="fa fa-user-circle"></i>
+                                    <span></span>명
+                                </small>
+                                <small class="text-muted date">9 mins</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card mb-4 shadow-sm">
+                        <img class="card-img-top" src="/images/logo.png">
+                        <div class="card-body">
+                            <a class="text-decoration-none">
+                                <h5 class="card-title context"></h5>
+                            </a>
+                            <p class="card-text">Short description</p>
+                            <p class="card-text context">
+                                <span class="font-weight-light text-monospace badge badge-pill badge-info mr-3">
+                                    <a class="text-decoration-none text-white">
+                                        <i class="fa fa-tag"></i> <span>Tag</span>
+                                    </a>
+                                </span>
+                                <span class="font-weight-light text-monospace badge badge-primary mr-3">
+                                    <a class="text-decoration-none text-white">
+                                        <i class="fa fa-globe"></i> <span class="text-white">City</span>
+                                    </a>
+                                </span>
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="fa fa-user-circle"></i>
+                                    <span></span>명
+                                </small>
+                                <small class="text-muted date">9 mins</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card mb-4 shadow-sm">
+                        <img class="card-img-top" src="/images/logo.png">
+                        <div class="card-body">
+                            <a class="text-decoration-none">
+                                <h5 class="card-title context"></h5>
+                            </a>
+                            <p class="card-text">Short description</p>
+                            <p class="card-text context">
+                                <span class="font-weight-light text-monospace badge badge-pill badge-info mr-3">
+                                    <a class="text-decoration-none text-white">
+                                        <i class="fa fa-tag"></i> <span>Tag</span>
+                                    </a>
+                                </span>
+                                <span class="font-weight-light text-monospace badge badge-primary mr-3">
+                                    <a class="text-decoration-none text-white">
+                                        <i class="fa fa-globe"></i> <span class="text-white">City</span>
+                                    </a>
+                                </span>
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="fa fa-user-circle"></i>
+                                    <span></span>명
+                                </small>
+                                <small class="text-muted date">9 mins</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card mb-4 shadow-sm">
+                        <img class="card-img-top" src="/images/logo.png">
+                        <div class="card-body">
+                            <a class="text-decoration-none">
+                                <h5 class="card-title context"></h5>
+                            </a>
+                            <p class="card-text">Short description</p>
+                            <p class="card-text context">
+                                <span class="font-weight-light text-monospace badge badge-pill badge-info mr-3">
+                                    <a class="text-decoration-none text-white">
+                                        <i class="fa fa-tag"></i> <span>Tag</span>
+                                    </a>
+                                </span>
+                                <span class="font-weight-light text-monospace badge badge-primary mr-3">
+                                    <a class="text-decoration-none text-white">
+                                        <i class="fa fa-globe"></i> <span class="text-white">City</span>
+                                    </a>
+                                </span>
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="fa fa-user-circle"></i>
+                                    <span></span>명
+                                </small>
+                                <small class="text-muted date">9 mins</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer th:replace="fragments.html :: footer"></footer>
+</body>
+</html>

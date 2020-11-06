@@ -58,30 +58,34 @@ public class CircleController {
 
     @GetMapping("/circle/{path}")
     public String circleDetail(@CurrentAccount Account account, Model model, @PathVariable String path){
-        model.addAttribute(account);
-        Circle circle = circleRepository.findByPath(path);
+        Circle circle = circleService.validatePath(path);
 
-        if(circle == null){
-            throw new IllegalArgumentException(path +"에 해당하는 동아리가 존재하지 않습니다.");
-        }
         model.addAttribute(circle);
+        model.addAttribute(account);
 
         return "circle/detail";
     }
 
     @GetMapping("/circle/{path}/member")
     public String circleMembers(@CurrentAccount Account account, Model model, @PathVariable String path){
-        Circle circle = circleRepository.findByPath(path);
-        if(circle == null){
-            throw new IllegalArgumentException(path +"에 해당하는 동아리가 존재하지 않습니다.");
-        }
-        if(!((account.isRecognizedManager()&&account.isSignUpAsManager())|| circle.isMember(account))){
-            throw new AccessDeniedException("해당 기능을 이용하실 수 없습니다.");
-        }
+        Circle circle = circleService.validatePath(path);
+        circleService.validateAccount(account,circle);
 
         model.addAttribute(account);
         model.addAttribute(circle);
 
         return "circle/member";
     }
+
+    @GetMapping("/circle/{path}/activity")
+    public String circleActivitiy(@CurrentAccount Account account, Model model, @PathVariable String path){
+        Circle circle = circleService.validatePath(path);
+        model.addAttribute(account);
+        model.addAttribute(circle);
+        model.addAttribute("isManager",account.isRecognizedManager() && account.isRecognizedManager());
+
+        return "circle/activity";
+    }
+
+
 }
