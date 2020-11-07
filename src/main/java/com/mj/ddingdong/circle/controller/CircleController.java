@@ -153,5 +153,40 @@ public class CircleController {
 
     }
 
+    @GetMapping("/circle/{path}/activity/modify")
+    public String modifyActivityView(@CurrentAccount Account account, Model model, @PathVariable String path,
+                                     @RequestParam("id") String id, @RequestParam("page") int page){
+
+        Circle circle = circleService.validatePath(path);
+        if(circleService.circleManagedByManager(circle,account)) {
+            model.addAttribute(account);
+            model.addAttribute(circle);
+            Optional<Activity> activity = activityRepository.findById(Long.valueOf(id));
+            model.addAttribute(modelMapper.map(activity.get(),ActivityForm.class));
+            model.addAttribute("id",id);
+            model.addAttribute("page",page);
+        }
+        return "circle/modify-activity";
+    }
+
+    @PostMapping("/circle/{path}/activity/modify")
+    public String modifyActivity(@CurrentAccount Account account, Model model, @PathVariable String path, @Valid ActivityForm activityForm,
+                                 Errors errors,@RequestParam("id") String id, @RequestParam("page") int page,RedirectAttributes rttr) throws UnsupportedEncodingException {
+        Circle circle = circleService.validatePath(path);
+        if(errors.hasErrors()){
+            model.addAttribute(account);
+            model.addAttribute(circle);
+            model.addAttribute("id",id);
+            model.addAttribute("page",page);
+
+            return "circle/modify-activity";
+        }
+        Optional<Activity> activity = activityRepository.findById(Long.valueOf(id));
+        activityService.modifyActivity(activity.get(),activityForm);
+        rttr.addFlashAttribute("success","게시글이 성공적으로 수정되었습니다.");
+
+        return "redirect:/circle/"+circle.getEncodedPath(path)+"/activity/detail?id="+id+"&page="+page;
+    }
+
 
 }
