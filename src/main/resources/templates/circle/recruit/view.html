@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments.html :: head"></head>
+
+<body class="bg-light">
+
+<nav th:replace="fragments.html :: nav"></nav>
+<div th:replace="fragments.html :: detail-top"></div>
+<div class="row justify-content-center mb-5">
+    <div class="card text-center col-10">
+        <div class="card-header">
+            <div th:replace="fragments.html :: circle-menu('recruit')"></div>
+        </div>
+        <div class="card-body mt-4">
+            <div class="row">
+                <div th:replace="fragments.html :: recruit-menu('recruit')"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer th:replace="fragments.html :: footer"></footer>
+</body>
+</html>

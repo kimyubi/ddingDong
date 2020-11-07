@@ -138,10 +138,7 @@ public class CircleController {
         model.addAttribute(account);
         model.addAttribute(circle);
 
-        if(circleService.circleManagedByManager(circle,account)){
-            model.addAttribute("isManager",account.isRecognizedManager() && account.isRecognizedManager());
-
-        }
+        model.addAttribute("isManager",account.isRecognizedManager() && account.isRecognizedManager());
 
         Optional<Activity> activity = activityRepository.findById(Long.valueOf(id));
         model.addAttribute("activity",activity.get());

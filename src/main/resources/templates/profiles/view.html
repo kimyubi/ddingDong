@@ -14,7 +14,7 @@
             <img th:if="${!#strings.isEmpty(byNickname.profileImage)}" class="img-fluid float-left rounded img-thumbnail"
                  th:src="${byNickname.profileImage}"
                  width="150" height="150"/>
-            <p class="ml-5" th:if="${#strings.isEmpty(byNickname.profileImage)}">
+            <p class="ml-2" th:if="${#strings.isEmpty(byNickname.profileImage)}">
                 <span th:each="tag: ${byNickname.DepartmentTags}" class="font-weight-light text-monospace badge badge-pill badge-warning mr-3">
                     <a th:href="@{'/search/zone/' + ${tag.title}}" class="text-decoration-none text-white">
                         <i class="fa fa-tag"></i> <span th:text="${tag.title}"></span>
