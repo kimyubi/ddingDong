@@ -33,4 +33,8 @@ public class ActivityService {
     public void modifyActivity(Activity activity, ActivityForm activityForm) {
         modelMapper.map(activityForm, activity);
     }
+
+    public void deleteActivity(Activity activity) {
+        activityRepository.delete(activity);
+    }
 }

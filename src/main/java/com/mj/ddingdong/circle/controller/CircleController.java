@@ -188,5 +188,16 @@ public class CircleController {
         return "redirect:/circle/"+circle.getEncodedPath(path)+"/activity/detail?id="+id+"&page="+page;
     }
 
+    @PostMapping("/circle/{path}/activity/delete")
+    public String deleteActivity(@CurrentAccount Account account, Model model, @PathVariable String path, @RequestParam("id") int id, @RequestParam("page") int page, RedirectAttributes rttr) throws UnsupportedEncodingException {
+        Circle circle = circleService.validatePath(path);
+        Optional<Activity> activity = activityRepository.findById(Long.valueOf(id));
+        activityService.deleteActivity(activity.get());
+
+        rttr.addFlashAttribute("deleteSuccess","게시글이 성공적으로 삭제되었습니다.");
+
+        return "redirect:/circle/"+ circle.getEncodedPath(path)+"/activity?id="+id+"&page="+page;
+    }
+
 
 }

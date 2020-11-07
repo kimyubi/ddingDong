@@ -8,6 +8,7 @@
 <nav th:replace="fragments.html :: nav"></nav>
 <div th:replace="fragments.html :: detail-top"></div>
 <div hidden th:text="${success}" th:if="${success}" id="success"></div>
+<div hidden th:text="${deleteSuccess}" th:if="${deleteSuccess}" id="deleteSuccess"></div>
 <div class="row justify-content-center mb-5">
     <div class="card text-center col-10">
         <div class="card-header">
@@ -83,6 +84,10 @@
     $(function(){
         if($("#success").text()){
             alert($("#success").text());
+        }
+
+        if($("#deleteSuccess").text()){
+            alert($("#deleteSuccess").text());
         }
     });
 </script>

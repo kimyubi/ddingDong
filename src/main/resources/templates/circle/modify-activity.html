@@ -42,8 +42,11 @@
                                 <input hidden type="text" name="page" th:value="${page}">
                                 <input hidden type="text" name="id" th:value="${id}">
                                 <div class="form-group text-center mt-4">
-                                    <input type="submit" class="btn btn-dark px-5 py-2 mr-3" value="수정하기">
+                                    <input id="update" type="submit" class="btn btn-dark px-5 py-2 mr-2" value="수정하기">
                                     <a th:href="@{'../activity/detail?id='+${id}+'&page='+ ${page}}" class="btn btn-secondary px-5 py-2">취소</a>
+                                    <form th:action="@{../activity/delete}" th:method="post">
+                                        <input  id="delete" type="submit" class="btn btn-danger px-5 py-2 ml-2" value="삭제">
+                                    </form>
                                 </div>
                             </form>
                         </div>
@@ -54,5 +57,16 @@
     </div>
 </div>
 <div th:replace="fragments.html :: editor-activity"></div>
+<script>
+    $("#update").click(function () {
+        $("form").attr("action", "../activity/modify");
+    });
+
+    $("#delete").click(function () {
+        $("form").attr("action", "../activity/delete");
+
+    });
+
+</script>
 </body>
 </html>
