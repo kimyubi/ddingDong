@@ -7,6 +7,7 @@
 
 <nav th:replace="fragments.html :: nav"></nav>
 <div th:replace="fragments.html :: detail-top"></div>
+<div hidden th:text="${success}" th:if="${success}" id="success"></div>
 <div class="row justify-content-center mb-5">
     <div class="card text-center col-10">
         <div class="card-header">
@@ -15,10 +16,26 @@
         <div class="card-body mt-4">
             <div class="row">
                 <div th:replace="fragments.html :: recruit-menu('recruit')"></div>
+                <div class="col-8 justify-content-center">
+
+                </div>
+                <div class="col-2 text-right justify-content-end">
+                    <a th:if="${isManager}" th:href="@{'../'+${circle.path}+'/recruit/create'}" type="button" class="btn btn-secondary btn-sm py-2">
+                        <i class="fa fa-pencil-square-o mr-1" aria-hidden="true"></i>
+                        공고 작성
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 </div>
 <footer th:replace="fragments.html :: footer"></footer>
+<script>
+    $(function() {
+        if ($("#success").text()) {
+            alert($("#success").text());
+        }
+    });
+</script>
 </body>
 </html>

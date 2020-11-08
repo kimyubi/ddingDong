@@ -22,7 +22,6 @@ public class Activity {
     private int viewCount = 0;
 
     @Column(nullable = false)
-    @Lob
     private String content;
 
     private LocalDateTime writedTime;

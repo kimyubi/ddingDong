@@ -6,6 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -20,22 +21,30 @@ public class Recruit {
     private Circle circle;
 
     @ManyToMany
-    private Set<Account> managers;
+    private Set<Account> managers = new HashSet<>();
 
-    //@Column(nullable = false)
+    @Column(nullable = false)
     private String title;
 
     @Lob
     @Basic(fetch = FetchType.EAGER)
+    @Column(nullable = false)
     private String applicationForm;
 
     private LocalDateTime createRecruitTime;
+
+    private LocalDateTime publishRecruitTime;
 
     private LocalDateTime startRecruitTime;
 
     private LocalDateTime endRecruitTime;
 
+    @Column(nullable = false)
+    private String shortIntroduce;
+
     @OneToMany(mappedBy = "recruit")
     @OrderBy("enrolledTime")
     private Set<Enrollment> enrollments;
+
+    private Integer limitPersonnel;
 }

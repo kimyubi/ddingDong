@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments.html :: head"></head>
+
+<body class="bg-light">
+
+<nav th:replace="fragments.html :: nav"></nav>
+<div th:replace="fragments.html :: detail-top"></div>
+<div class="row justify-content-center mb-5">
+    <div class="card text-center col-10">
+        <div class="card-header">
+            <div th:replace="fragments.html :: circle-menu('recruit')"></div>
+        </div>
+        <div class="card-body">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb py-3">
+                    <li class="breadcrumb-item ml-2">
+                        <strong>
+                            <a th:href="@{'/circle/'+${circle.path}}"
+                           th:text="${circle.title}" style="font-size: 16pt"></a>
+                        </strong>
+                    </li>
+                    <li class="breadcrumb-item active ml-2">
+                        <strong>
+                            <span th:text="${recruit.title}" style="font-size: 16pt"></span>
+                        </strong>
+                    </li>
+                </ol>
+            </nav>
+            <div class="row mt-2">
+                <div class="col-12">
+                    <div class="alert alert-light" role="alert">
+                        <div class="row">
+                            <div class="col-10 mt-3">
+                                <h2 class="text-left mt-3 mb-5" >
+                                        <strong th:text="${recruit.shortIntroduce}"></strong>
+                                </h2>
+                                <div class="row text-left mt-3">
+                                    <form class="col-12" th:action="@{/recruit/enrollment}" th:method="post" >
+                                        <div class="form-group">
+                                            <label for="content" style="font-size: larger">지원 양식</label>
+                                            <textarea id="content" type="textarea"  class="editor form-control"
+                                                      aria-describedby="fullDescriptionHelp" required></textarea>
+                                            <small id="contentHelp" class="form-text text-muted">
+                                                동아리의 활동 모습을 궁금해하는 회원들을 위해 동아리 활동 및 행사 등을 사진 및 글로 소개해주세요.
+                                            </small>
+                                            <!--                                    <small class="form-text text-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">content Error</small>-->
+                                        </div>
+                                        <div class="form-group mt-5 text-center">
+                                            <input type="submit" class="btn btn-dark px-5 py-2 mr-3" value="지원 하기">
+                                            <a th:href="@{'/circle/'+${circle.path}+'/recruit'}" class="btn btn-secondary px-5 py-2">목록</a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="col-2 justify-content-end mt-5">
+                                <div class="row justify-content-end mt-5">
+                                    <div th:each="manager : ${managers}">
+                                        <h5 class="text-left mt-5"><strong>매니저</strong></h5>
+                                        <svg th:if="${#strings.isEmpty(manager?.profileImage)}" th:data-jdenticon-value="${manager.nickname}" width="50" height="50" class="rounded border bg-light mr-2"></svg>
+                                        <img th:if="${!#strings.isEmpty(manager?.profileImage)}" th:src="${manager?.profileImage}" width="50" height="50" class="rounded border mr-2"/>
+                                        <strong style="font-size: larger" th:text="${manager.name}"></strong>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-end mt-5">
+                                    <h5 class="text-left"><strong>모집 시작일시</strong></h5>
+                                    <span style="font-size: larger" th:text="${#temporals.format(recruit.startRecruitTime,'yyyy-MM-dd HH:mm')}"></span>
+                                </div>
+
+                                <div class="row justify-content-end mt-5">
+                                    <h5 class="text-left"><strong>모집 종료일시</strong></h5>
+                                    <span style="font-size: larger" th:text="${#temporals.format(recruit.endRecruitTime,'yyyy-MM-dd HH:mm')}"></span>
+                                </div>
+
+                                <div class="row justify-content-end mt-2">
+                                    <div>
+                                        <i class="fa fa-hourglass-end"></i>
+                                        <span class="fromNow"
+                                              style="font-size: larger" th:text="${recruit.endRecruitTime}"></span>
+                                        <span style="font-size: larger"> 모집  종료</span>
+                                    </div>
+                                </div>
+
+                                <div class="row justify-content-end mt-5" th:if="${recruit.limitPersonnel != 0}">
+                                    <h5 class="text-left"><strong>모집 인원</strong></h5>
+                                </div>
+
+                                <div class="row justify-content-end" th:if="${recruit.limitPersonnel != 0}">
+                                    <div>
+                                        <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                                        <span style="font-size: larger" th:text="|${recruit.limitPersonnel}명|"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row justify-content-end mt-5" th:if="${isManager}">
+                                    <button type="button" class="btn btn-outline-primary px-3 py-2">수정하기</button>
+                                </div>
+
+                                <div class="row justify-content-end mt-2" th:if="${isManager}">
+                                    <button type="button" class="btn btn-outline-danger px-3 py-2">삭제하기</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer th:replace="fragments.html :: footer"></footer>
+<script th:replace="fragments.html :: editor-recruit"></script>
+<script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
+<script type="application/javascript">
+    $(function() {
+            moment.locale('ko');
+            $(".fromNow").text(function(index, dateTime) {
+                return moment(dateTime, "YYYY-MM-DD`T`hh:mm").fromNow();
+            });
+        });
+</script>
+</body>
+</html>

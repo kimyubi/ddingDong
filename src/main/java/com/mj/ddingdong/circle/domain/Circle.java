@@ -1,6 +1,7 @@
 package com.mj.ddingdong.circle.domain;
 
 import com.mj.ddingdong.account.domain.Account;
+import com.mj.ddingdong.recruit.domain.Recruit;
 import lombok.*;
 
 import javax.persistence.*;
@@ -52,6 +53,9 @@ public class Circle {
 
     @OneToMany(mappedBy = "circle")
     private Set<Activity> activities;
+
+    @OneToMany(mappedBy = "circle")
+    private Set<Recruit> recruits;
 
     public String getEncodedPath(String path) throws UnsupportedEncodingException {
         return URLEncoder.encode(path, "utf-8");
