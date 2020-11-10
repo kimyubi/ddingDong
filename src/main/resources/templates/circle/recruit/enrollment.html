@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments.html :: head"></head>
+
+<body class="bg-light">
+
+<nav th:replace="fragments.html :: nav"></nav>
+<div th:replace="fragments.html :: detail-top"></div>
+<div class="row justify-content-center mb-5">
+    <div class="card text-center col-10">
+        <div class="card-header">
+            <div th:replace="fragments.html :: circle-menu('recruit')"></div>
+        </div>
+        <div class="card-body">
+            <div class="row mt-2">
+                <div class="col-12">
+                    <div class="alert alert-light" role="alert">
+                        <div class="text-center">
+                            <h3><strong th:text="${recruit.title}"></strong></h3>
+                        </div>
+                        <div class="row text-left mt-3">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>
+                                        지원자
+                                    </label>
+                                    <a th:href="@{'/profiles/'+${enrollment.account.nickname}}">
+                                        <svg th:if="${#strings.isEmpty(enrollment.account?.profileImage)}" th:data-jdenticon-value="${enrollment.account.nickname}" width="30" height="30" class="rounded border bg-light mr-2"></svg>
+                                    </a>
+                                    <a th:href="@{'/profiles/'+${enrollment.account.nickname}}">
+                                        <img th:if="${!#strings.isEmpty(enrollment.account?.profileImage)}" th:src="${enrollment.account?.profileImage}" width="30" height="30" class="rounded border"/>
+                                    </a>
+                                    <strong th:text="${enrollment.account.name}"></strong>
+                                    <span th:if="${circle.isMember(account)}" class="badge badge-danger py-2">동아리 부원</span>
+
+                                </div>
+                                <div class="form-group">
+                                    <label>지원일</label>
+                                    <input type="text" class="form-control col-3"
+                                           disabled th:value="${#temporals.format(enrollment.enrolledTime,'yyyy-MM-dd HH:mm')}">
+                                </div>
+                                <div class="form-group">
+                                    <label>지원서</label>
+                                    <div id="detailContent" role="alert" class="px-5 py-3">
+                                        <span th:utext="${enrollment.applicationForm}"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group text-center mt-4">
+                                    <form th:method="post" th:action="@{'/circle/'+${circle.path}+'/recruit/pass'}">
+                                        <input type="text" hidden name="circleId" th:value="${circle.id}">
+                                        <input type="text" hidden name="enrollmentId" th:value="${enrollment.id}">
+                                        <input type="text" hidden name="recruitId" th:value="${recruit.id}">
+                                        <a th:href="@{'/circle/'+${circle.path}+'/recruit/applications?id='+${recruit.id}}" class="btn btn-secondary px-5 py-2 mr-2">목록으로 돌아가기</a>
+                                        <input th:if="${!circle.isMember(enrollment.account)}" type="submit" value="승인" class="btn btn-primary">
+                                        <input th:if="${circle.isMember(enrollment.account)}" disabled type="submit" value="승인" class="btn btn-primary">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="fragments.html :: footer"></footer>
+<script th:replace="fragments.html :: editor-recruit"></script>
+<script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
+<script type="application/javascript">
+    $(function() {
+            moment.locale('ko');
+            $(".fromNow").text(function(index, dateTime) {
+                return moment(dateTime, "YYYY-MM-DD`T`hh:mm").fromNow();
+            });
+            if ($("#success").text()) {
+                alert($("#success").text());
+            }
+
+            if ($("#failure").text()) {
+            alert($("#failure").text());
+            }
+        });
+</script>
+</body>
+</html>

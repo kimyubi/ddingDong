@@ -6,6 +6,7 @@ import com.mj.ddingdong.circle.domain.Circle;
 import com.mj.ddingdong.circle.form.CircleForm;
 import com.mj.ddingdong.circle.repository.ActivityRepository;
 import com.mj.ddingdong.circle.repository.CircleRepository;
+import com.mj.ddingdong.recruit.domain.Enrollment;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.AccessDeniedException;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -77,5 +79,13 @@ public class CircleService {
             }
         }
         return false;
+    }
+
+    public void passEnrollment(Circle circle, Enrollment enrollment) {
+        if(!circle.isMember(enrollment.getAccount())) {
+            circle.getMembers().add(enrollment.getAccount());
+            circleRepository.save(circle);
+        }
+
     }
 }

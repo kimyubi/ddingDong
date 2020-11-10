@@ -260,4 +260,47 @@ public class RecruitController {
         model.addAttribute("enrollments",enrollments);
         return "circle/recruit/applications";
     }
+
+    @GetMapping("/recruit/applications/enrollment")
+    public String enrollmentView(@CurrentAccount Account account,Long id, Long recruitId, @PathVariable String path, Model model){
+        Circle circle = circleService.validatePath(path);
+        Optional<Recruit> byId = recruitRepository.findById(recruitId);
+        Recruit recruit;
+        if(byId.get() != null) {
+            recruit = byId.get();
+        } else{
+            throw new IllegalArgumentException(id+"에 해당하는 공고가 없습니다.");
+        }
+        model.addAttribute(circle);
+        model.addAttribute(account);
+        model.addAttribute(recruit);
+
+        circleService.circleManagedByManager(account,circle);
+
+        Optional<Enrollment> enrollment = enrollmentRepository.findById(id);
+        if(enrollment.get() != null){
+            model.addAttribute("enrollment",enrollment.get());
+        }
+
+        return "circle/recruit/enrollment";
+    }
+
+    @PostMapping("/recruit/pass")
+    public String passEnrollment(@CurrentAccount Account account, Long circleId, Long recruitId, Long enrollmentId, Model model, @PathVariable String path) throws UnsupportedEncodingException {
+        Circle circle = circleService.validatePath(path);
+        Optional<Recruit> byId = recruitRepository.findById(recruitId);
+        Recruit recruit;
+        if(byId.get() != null) {
+            recruit = byId.get();
+        } else{
+            throw new IllegalArgumentException(recruitId+"에 해당하는 공고가 없습니다.");
+        }
+        circleService.circleManagedByManager(account,circle);
+        Optional<Enrollment> enrollment = enrollmentRepository.findById(enrollmentId);
+
+        circleService.passEnrollment(circle,enrollment.get());
+        return "redirect:/circle/"+circle.getEncodedPath(path)+
+                "/recruit/applications/enrollment?id="+enrollmentId+"&recruitId="+recruitId;
+    }
+
 }

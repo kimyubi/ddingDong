@@ -30,6 +30,5 @@ public class EnrollmentService {
                 .build();
 
         enrollmentRepository.save(enrollment);
-        circle.getMembers().add(account);
     }
 }

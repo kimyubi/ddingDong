@@ -33,15 +33,15 @@
                             <tr th:each="enrollment : ${enrollments}">
                                 <th th:text="${enrollment.id}">Mark</th>
                                 <td colspan="10">
-                                    <a style="color: black" th:text="${recruit.title}" th:href="@{'/circle/'+${circle.path}+'/recruit/applications/enrollment?id='+${enrollment.id}}"></a>
+                                    <a style="color: black" th:text="${recruit.title}" th:href="@{'/circle/'+${circle.path}+'/recruit/applications/enrollment?id='+${enrollment.id}+'&recruitId='+${recruit.id}}"></a>
                                 </td>
                                 <td colspan="10" th:text="${#temporals.format(enrollment.enrolledTime,'yyyy-MM-dd HH:mm')}">@mdo</td>
                                 <td colspan="10">
                                     <a th:href="@{'/profiles/'+${enrollment.account.nickname}}">
-                                        <svg th:if="${#strings.isEmpty(enrollment.account?.profileImage)}" th:data-jdenticon-value="${enrollment.account.profileImage}" width="30" height="30" class="rounded border bg-light mr-2"></svg>
+                                        <svg th:if="${#strings.isEmpty(enrollment.account.profileImage)}" th:data-jdenticon-value="${enrollment.account.nickname}" width="30" height="30" class="rounded border bg-light mr-2"></svg>
                                     </a>
                                     <a th:href="@{'/profiles/'+${enrollment.account.nickname}}">
-                                        <img th:if="${!#strings.isEmpty(enrollment.account?.profileImage)}" th:src="${enrollment.account?.profileImage}" width="30" height="30" class="rounded border mr-2"/>
+                                        <img th:if="${!#strings.isEmpty(enrollment.account.profileImage)}" th:src="${enrollment.account.profileImage}" width="30" height="30" class="rounded border mr-2"/>
                                     </a>
                                     <strong th:text="${enrollment.account.name}"></strong>
                                 </td>
