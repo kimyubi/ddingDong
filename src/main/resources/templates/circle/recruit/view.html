@@ -27,7 +27,7 @@
                                     <strong>
                                         <div>
                                             <span th:text="${recruit.title}"></span>
-                                            <span class="badge badge-danger px-2 py-1">지원한 공고</span>
+                                            <span th:if="${recruit.isEnrolled(account)}" class="badge badge-primary px-2 py-2 ml-2">지원한 공고</span>
                                         </div>
                                     </strong>
                                 </div>

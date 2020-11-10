@@ -47,4 +47,13 @@ public class Recruit {
     private Set<Enrollment> enrollments;
 
     private Integer limitPersonnel;
+
+    public boolean isEnrolled(Account account){
+        for(Enrollment enrollment : this.enrollments){
+            if(enrollment.getAccount().getId().equals(account.getId())){
+                return true;
+            }
+        }
+        return false;
+    }
 }
