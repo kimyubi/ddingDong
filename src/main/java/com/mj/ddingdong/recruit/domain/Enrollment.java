@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter @Setter @EqualsAndHashCode(of="id")
 @AllArgsConstructor @NoArgsConstructor
+@Builder
 public class Enrollment {
 
     @Id @GeneratedValue

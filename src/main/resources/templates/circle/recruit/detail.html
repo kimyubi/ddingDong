@@ -7,6 +7,8 @@
 
 <nav th:replace="fragments.html :: nav"></nav>
 <div th:replace="fragments.html :: detail-top"></div>
+<div hidden th:text="${success}" th:if="${success}" id="success"></div>
+<div hidden th:text="${failure}" th:if="${failure}" id="failure"></div>
 <div class="row justify-content-center mb-5">
     <div class="card text-center col-10">
         <div class="card-header">
@@ -37,15 +39,21 @@
                                         <strong th:text="${recruit.shortIntroduce}"></strong>
                                 </h2>
                                 <div class="row text-left mt-3">
-                                    <form class="col-12" th:action="@{/recruit/enrollment}" th:method="post" >
+                                    <form class="col-12" th:action="@{'/circle/'+${circle.path}+'/recruit/enrollment'}" th:method="post"
+                                    th:object="${enrollmentForm}">
+                                        <input type="text" hidden name="id" th:value="${recruit.id}">
                                         <div class="form-group">
-                                            <label for="content" style="font-size: larger">지원 양식</label>
-                                            <textarea id="content" type="textarea"  class="editor form-control"
-                                                      aria-describedby="fullDescriptionHelp" required></textarea>
+                                            <label for="applicationForm" style="font-size: larger" aria-describedby="labelHelp">지원 양식</label>
+                                            <textarea id="applicationForm" type="textarea"  class="editor form-control"
+                                                      aria-describedby="fullDescriptionHelp" required
+                                            th:field="*{applicationForm}"></textarea>
                                             <small id="contentHelp" class="form-text text-muted">
                                                 동아리의 활동 모습을 궁금해하는 회원들을 위해 동아리 활동 및 행사 등을 사진 및 글로 소개해주세요.
                                             </small>
-                                            <!--                                    <small class="form-text text-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">content Error</small>-->
+                                            <small id="labelHelp" class="form-text text-danger">
+                                                지원서를 제출한 이후에는 수정이 불가능합니다. 지원서를 신중하게 작성해주세요.
+                                            </small>
+                                            <small class="form-text text-danger" th:if="${#fields.hasErrors('applicationForm')}" th:errors="*{applicationForm}">applicationForm Error</small>
                                         </div>
                                         <div class="form-group mt-5 text-center">
                                             <input type="submit" class="btn btn-dark px-5 py-2 mr-3" value="지원 하기">
@@ -118,6 +126,14 @@
             $(".fromNow").text(function(index, dateTime) {
                 return moment(dateTime, "YYYY-MM-DD`T`hh:mm").fromNow();
             });
+            if ($("#success").text()) {
+                alert($("#success").text());
+            }
+
+        if ($("#failure").text()) {
+            alert($("#failure").text());
+        }
+
         });
 </script>
 </body>

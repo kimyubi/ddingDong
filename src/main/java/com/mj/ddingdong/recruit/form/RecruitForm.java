@@ -15,7 +15,6 @@ public class RecruitForm {
     @Length(max = 50)
     private String title;
 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @NotBlank
     private String applicationForm;
 

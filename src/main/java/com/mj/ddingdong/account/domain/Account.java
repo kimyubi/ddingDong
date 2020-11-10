@@ -1,5 +1,6 @@
 package com.mj.ddingdong.account.domain;
 
+import com.mj.ddingdong.recruit.domain.Enrollment;
 import com.mj.ddingdong.tag.domain.DepartmentTag;
 import com.mj.ddingdong.tag.domain.FieldTag;
 import com.mj.ddingdong.tag.domain.IntroduceTag;
@@ -57,6 +58,8 @@ public class Account {
 
     private String token;
 
+    @OneToMany(mappedBy = "account" )
+    private Set<Enrollment> enrollments;
 
     public String getEncodedNickname() {
         return URLEncoder.encode(this.nickname, StandardCharsets.UTF_8);
