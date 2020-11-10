@@ -66,6 +66,7 @@ public class CircleService {
         activityRepository.save(activity);
 
         circle.getActivities().add(activity);
+        circleRepository.save(circle);
     }
 
 

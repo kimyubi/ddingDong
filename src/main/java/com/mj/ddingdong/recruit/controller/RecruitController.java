@@ -172,7 +172,7 @@ public class RecruitController {
             return "circle/recruit/detail";
         }
 
-        enrollmentService.enrollmentToRecruit(account,recruit,enrollmentForm);
+        enrollmentService.enrollmentToRecruit(account,circle,recruit,enrollmentForm);
         rttr.addFlashAttribute("success","동아리 지원이 성공적으로 접수되었습니다.");
 
         return "redirect:/circle/"+circle.getEncodedPath(path)+"/recruit";
@@ -238,5 +238,26 @@ public class RecruitController {
         rttr.addFlashAttribute("success","공고가 성공적으로 수정되었습니다.");
         return "redirect:/circle/"+circle.getEncodedPath(path)+"/recruit/detail?id="+id;
 
+    }
+
+
+    @GetMapping("/recruit/applications")
+    public String applicationsView(@CurrentAccount Account account,Long id, @PathVariable String path, Model model){
+        Circle circle = circleService.validatePath(path);
+        Optional<Recruit> byId = recruitRepository.findById(id);
+        Recruit recruit;
+        if(byId.get() != null) {
+            recruit = byId.get();
+        } else{
+            throw new IllegalArgumentException(id+"에 해당하는 공고가 없습니다.");
+        }
+        model.addAttribute(circle);
+        model.addAttribute(account);
+        model.addAttribute(recruit);
+
+        circleService.circleManagedByManager(account,circle);
+        List<Enrollment> enrollments = enrollmentRepository.findByRecruitIdOrderByEnrolledTime(recruit.getId());
+        model.addAttribute("enrollments",enrollments);
+        return "circle/recruit/applications";
     }
 }

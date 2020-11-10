@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments.html :: head"></head>
+
+<body class="bg-light">
+
+<nav th:replace="fragments.html :: nav"></nav>
+<div th:replace="fragments.html :: detail-top"></div>
+<div class="row justify-content-center mb-5">
+    <div class="card text-center col-10">
+        <div class="card-header">
+            <div th:replace="fragments.html :: circle-menu('recruit')"></div>
+        </div>
+        <div class="col-sm-12">
+            <div class="row mt-2 ml-4 mr-4 mb-5 mt-5" >
+                <h6 th:if="${enrollments.size() != 0}" class="form-text text-muted ml-4">
+                    지원자의 프로필 사진을 클릭하면 프로필로 이동합니다.
+                </h6>
+                <div class="col-12 justify-content-center">
+                    <h3 th:if="${enrollments.size() == 0}">해당 공고의 지원자가 없습니다.</h3>
+                    <table class="table table-hover" th:if="${enrollments.size() != 0}" th:each="manager : ${circle.getManagers()}">
+                        <thead class="thead-light">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col" colspan="10">공고명</th>
+                            <th scope="col"  colspan="10">지원일</th>
+                            <th scope="col">지원자</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="enrollment : ${enrollments}">
+                                <th th:text="${enrollment.id}">Mark</th>
+                                <td colspan="10">
+                                    <a style="color: black" th:text="${recruit.title}" th:href="@{'/circle/'+${circle.path}+'/recruit/applications/enrollment?id='+${enrollment.id}}"></a>
+                                </td>
+                                <td colspan="10" th:text="${#temporals.format(enrollment.enrolledTime,'yyyy-MM-dd HH:mm')}">@mdo</td>
+                                <td colspan="10">
+                                    <a th:href="@{'/profiles/'+${enrollment.account.nickname}}">
+                                        <svg th:if="${#strings.isEmpty(enrollment.account?.profileImage)}" th:data-jdenticon-value="${enrollment.account.profileImage}" width="30" height="30" class="rounded border bg-light mr-2"></svg>
+                                    </a>
+                                    <a th:href="@{'/profiles/'+${enrollment.account.nickname}}">
+                                        <img th:if="${!#strings.isEmpty(enrollment.account?.profileImage)}" th:src="${enrollment.account?.profileImage}" width="30" height="30" class="rounded border mr-2"/>
+                                    </a>
+                                    <strong th:text="${enrollment.account.name}"></strong>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="fragments.html :: footer"></footer>
+</body>
+</html>

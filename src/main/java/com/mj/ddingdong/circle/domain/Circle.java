@@ -7,6 +7,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -68,6 +69,15 @@ public class Circle {
     public boolean isMember(Account account){
         for(Account member : this.getMembers()){
             if(member.getId().equals(account.getId())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isRecruiting(){
+        for(Recruit recruit : this.recruits){
+            if(recruit.getStartRecruitTime().isBefore(LocalDateTime.now()) && recruit.getEndRecruitTime().isAfter(LocalDateTime.now())){
                 return true;
             }
         }

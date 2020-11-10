@@ -22,11 +22,6 @@ public class RecruitValidator implements Validator {
     public void validate(Object o, Errors errors) {
         RecruitForm recruitForm = (RecruitForm) o;
 
-
-        if (isNotValidPublishRecruitTime(recruitForm)) {
-            errors.rejectValue("publishRecruitTime", "wrong.publishRecruitTime", "공고 게시 일시는 현재 시각 이후로 설정해주세요.");
-        }
-
         if (isNotValidStartRecruitTime(recruitForm)) {
             errors.rejectValue("startRecruitTime", "wrong.startRecruitTime", "모집 시작 일시를 정확히 입력하세요.");
         }
@@ -36,16 +31,12 @@ public class RecruitValidator implements Validator {
         }
     }
 
-    private boolean isNotValidPublishRecruitTime(RecruitForm recruitForm) {
-        return recruitForm.getPublishRecruitTime().isBefore(LocalDateTime.now());
-    }
-
     private boolean isNotValidStartRecruitTime(RecruitForm recruitForm) {
         return recruitForm.getStartRecruitTime().isBefore(recruitForm.getPublishRecruitTime());
     }
 
     private boolean isNotValidEndDateTime(RecruitForm recruitForm) {
         LocalDateTime endRecruitTime = recruitForm.getEndRecruitTime();
-        return endRecruitTime.isBefore(recruitForm.getStartRecruitTime()) || endRecruitTime.isBefore(recruitForm.getPublishRecruitTime());
+        return endRecruitTime.isBefore(recruitForm.getStartRecruitTime());
     }
 }

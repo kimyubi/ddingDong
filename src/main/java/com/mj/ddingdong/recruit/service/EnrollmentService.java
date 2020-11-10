@@ -1,6 +1,7 @@
 package com.mj.ddingdong.recruit.service;
 
 import com.mj.ddingdong.account.domain.Account;
+import com.mj.ddingdong.circle.domain.Circle;
 import com.mj.ddingdong.recruit.domain.Enrollment;
 import com.mj.ddingdong.recruit.domain.Recruit;
 import com.mj.ddingdong.recruit.form.EnrollmentForm;
@@ -20,7 +21,7 @@ public class EnrollmentService {
 
     private final EnrollmentRepository enrollmentRepository;
 
-    public void enrollmentToRecruit(Account account, Recruit recruit, @Valid EnrollmentForm enrollmentForm) {
+    public void enrollmentToRecruit(Account account, Circle circle, Recruit recruit, @Valid EnrollmentForm enrollmentForm) {
         Enrollment enrollment= Enrollment.builder()
                 .account(account)
                 .recruit(recruit)
@@ -29,5 +30,6 @@ public class EnrollmentService {
                 .build();
 
         enrollmentRepository.save(enrollment);
+        circle.getMembers().add(account);
     }
 }

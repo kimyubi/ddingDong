@@ -35,8 +35,12 @@
                     <div class="alert alert-light" role="alert">
                         <div class="row">
                             <div class="col-10 mt-3">
-                                <h2 class="text-left mt-3 mb-5" >
-                                        <strong th:text="${recruit.shortIntroduce}"></strong>
+                                <h2 class="text-left mt-3 mb-3" >
+                                    <strong th:text="${recruit.shortIntroduce}"></strong>
+                                    <div class="text-right">
+                                        <a th:if="${isManager}" th:href="@{'/circle/'+${circle.path}+'/recruit/applications?id='+${recruit.id}}"
+                                           class="btn btn-outline-success px-4 py-2">지원서 열람하기</a>
+                                    </div>
                                 </h2>
                                 <div class="row text-left mt-3">
                                     <form class="col-12" th:action="@{'/circle/'+${circle.path}+'/recruit/enrollment'}" th:method="post"
@@ -85,9 +89,8 @@
                                 <div class="row justify-content-end mt-2">
                                     <div>
                                         <i class="fa fa-hourglass-end"></i>
-                                        <span class="fromNow"
-                                              style="font-size: larger" th:text="${recruit.endRecruitTime}"></span>
-                                        <span style="font-size: larger"> 모집  종료</span>
+                                        <span class="fromNow" th:text="${recruit.endRecruitTime}"></span>
+                                        <span> 모집  종료</span>
                                     </div>
                                 </div>
 

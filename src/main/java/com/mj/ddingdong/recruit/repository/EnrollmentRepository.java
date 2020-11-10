@@ -16,4 +16,6 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment,Long>, En
     long isAlreadyEnrolled(Account account, Recruit recruit);
 
     List<Enrollment> findByRecruitId(Long id);
+
+    List<Enrollment> findByRecruitIdOrderByEnrolledTime(Long id);
 }
