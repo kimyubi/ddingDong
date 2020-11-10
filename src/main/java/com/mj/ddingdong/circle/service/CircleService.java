@@ -51,7 +51,7 @@ public class CircleService {
         }
     }
 
-    public boolean circleManagedByManager(Circle circle, Account account) {
+    public boolean circleManagedByManager(Account account, Circle circle) {
         for(Account manager : circle.getManagers()){
             if(manager.getId().equals(account.getId())){
                 return true;
@@ -66,5 +66,15 @@ public class CircleService {
         activityRepository.save(activity);
 
         circle.getActivities().add(activity);
+    }
+
+
+    public boolean isManagerToCircle(Account account, Circle circle) {
+        for(Account manager : circle.getManagers()){
+            if(manager.getId().equals(account.getId())){
+                return true;
+            }
+        }
+        return false;
     }
 }

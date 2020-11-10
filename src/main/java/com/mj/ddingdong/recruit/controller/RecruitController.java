@@ -14,6 +14,7 @@ import com.mj.ddingdong.recruit.repository.RecruitRepository;
 import com.mj.ddingdong.recruit.service.EnrollmentService;
 import com.mj.ddingdong.recruit.service.RecruitService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.ErrorState;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,9 +51,12 @@ public class RecruitController {
     @GetMapping("/recruit")
     public String recruitView(@CurrentAccount Account account, @PathVariable String path, Model model){
         Circle circle = circleService.validatePath(path);
+
         model.addAttribute(account);
         model.addAttribute(circle);
-        model.addAttribute("isManager",account.isRecognizedManager() && account.isRecognizedManager());
+
+        model.addAttribute("isManager",circleService.isManagerToCircle(account,circle));
+
         List<Recruit> recruits = recruitRepository.findByCircleOrderByStartRecruitTime(circle);
         List<Recruit> currentRecruit = new ArrayList<>();
         recruits.forEach(e -> {
@@ -62,7 +66,6 @@ public class RecruitController {
         });
 
         model.addAttribute("currentRecruit", currentRecruit);
-
         return "circle/recruit/view";
     }
 
@@ -71,7 +74,18 @@ public class RecruitController {
         Circle circle = circleService.validatePath(path);
         model.addAttribute(account);
         model.addAttribute(circle);
-        model.addAttribute("isManager",account.isRecognizedManager() && account.isRecognizedManager());
+
+        model.addAttribute("isManager",circleService.isManagerToCircle(account,circle));
+
+        List<Recruit> recruits = recruitRepository.findByCircleOrderByStartRecruitTime(circle);
+        List<Recruit> endedRecruit = new ArrayList<>();
+        recruits.forEach(e -> {
+            if (e.getEndRecruitTime().isBefore(LocalDateTime.now())) {
+                endedRecruit.add(e);
+            }
+        });
+
+        model.addAttribute("endedRecruit", endedRecruit);
 
         return "circle/recruit/view-ended";
     }
@@ -82,7 +96,7 @@ public class RecruitController {
         model.addAttribute(account);
         model.addAttribute(circle);
 
-        circleService.validateAccountMemberOrManager(account,circle);
+        circleService.circleManagedByManager(account,circle);
         model.addAttribute(new RecruitForm());
         return "circle/recruit/create";
     }
@@ -92,7 +106,7 @@ public class RecruitController {
                                 @Valid RecruitForm recruitForm, Errors errors,
                                 Model model, RedirectAttributes rttr) throws UnsupportedEncodingException {
         Circle circle = circleService.validatePath(path);
-        circleService.validateAccountMemberOrManager(account,circle);
+        circleService.circleManagedByManager(account,circle);
         model.addAttribute(account);
         model.addAttribute(circle);
 
@@ -111,7 +125,7 @@ public class RecruitController {
     public String recruitDetailView(@CurrentAccount Account account, @PathVariable String path,
                                     Model model, Long id){
         Circle circle = circleService.validatePath(path);
-        circleService.validateAccountMemberOrManager(account,circle);
+
         model.addAttribute(account);
         model.addAttribute(circle);
 
@@ -120,7 +134,7 @@ public class RecruitController {
             Recruit recruit = byId.get();
             model.addAttribute(recruit);
             model.addAttribute("managers",recruit.getManagers());
-            model.addAttribute("isManager",account.isRecognizedManager() && account.isRecognizedManager());
+            model.addAttribute("isManager",circleService.isManagerToCircle(account,circle));
             model.addAttribute(modelMapper.map(recruit, EnrollmentForm.class));
         }
         else{
@@ -162,5 +176,67 @@ public class RecruitController {
         rttr.addFlashAttribute("success","동아리 지원이 성공적으로 접수되었습니다.");
 
         return "redirect:/circle/"+circle.getEncodedPath(path)+"/recruit";
+    }
+
+    @GetMapping("/recruit/delete")
+    public String deleteRecruit(@CurrentAccount Account account,Long id, @PathVariable String path,RedirectAttributes rttr){
+        Circle circle = circleService.validatePath(path);
+        Optional<Recruit> byId = recruitRepository.findById(id);
+        Recruit recruit;
+        if(byId.get() != null) {
+            recruit = byId.get();
+        } else{
+            throw new IllegalArgumentException(id+"에 해당하는 공고가 없습니다.");
+        }
+        recruitService.deleteRecruit(circle,recruit);
+        rttr.addFlashAttribute("success","공고가 성공적으로 삭제 되었습니다.");
+        return "redirect:/circle/"+path+"/recruit";
+
+    }
+
+    @GetMapping("/recruit/modify")
+    public String deleteRecruit(@CurrentAccount Account account,Long id, @PathVariable String path, Model model){
+        Circle circle = circleService.validatePath(path);
+        Optional<Recruit> byId = recruitRepository.findById(id);
+        Recruit recruit;
+        if(byId.get() != null) {
+            recruit = byId.get();
+        } else{
+            throw new IllegalArgumentException(id+"에 해당하는 공고가 없습니다.");
+        }
+        circleService.circleManagedByManager(account,circle);
+        model.addAttribute(circle);
+        model.addAttribute(account);
+        model.addAttribute(recruit);
+        model.addAttribute(modelMapper.map(recruit,RecruitForm.class));
+
+        return "circle/recruit/modify";
+    }
+
+    @PostMapping("/recruit/modify")
+    public String modifyRecruit(@CurrentAccount Account account, Long id, @PathVariable String path,
+                                @Valid RecruitForm recruitForm, Errors errors, Model model, RedirectAttributes rttr) throws UnsupportedEncodingException {
+        Circle circle = circleService.validatePath(path);
+        Optional<Recruit> byId = recruitRepository.findById(id);
+        Recruit recruit;
+        if(byId.get() != null) {
+            recruit = byId.get();
+        } else{
+            throw new IllegalArgumentException(id+"에 해당하는 공고가 없습니다.");
+        }
+
+        if(errors.hasErrors()){
+            model.addAttribute(circle);
+            model.addAttribute(account);
+            model.addAttribute(recruit);
+            return "circle/recruit/modify";
+        }
+
+        circleService.circleManagedByManager(account,circle);
+        recruitService.modifyRecruit(recruit,recruitForm);
+
+        rttr.addFlashAttribute("success","공고가 성공적으로 수정되었습니다.");
+        return "redirect:/circle/"+circle.getEncodedPath(path)+"/recruit/detail?id="+id;
+
     }
 }

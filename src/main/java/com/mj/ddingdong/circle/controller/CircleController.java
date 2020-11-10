@@ -92,7 +92,7 @@ public class CircleController {
 
         model.addAttribute(account);
         model.addAttribute(circle);
-        model.addAttribute("isManager",account.isRecognizedManager() && account.isRecognizedManager());
+        model.addAttribute("isManager",circleService.isManagerToCircle(account,circle));
 
         Page<Activity> activities = activityRepository.findByCircle(circle,pageable);
         model.addAttribute("activities",activities);
@@ -104,7 +104,7 @@ public class CircleController {
     @GetMapping("/circle/{path}/activity/write")
     public String createCircleActivity(@CurrentAccount Account account, Model model, @PathVariable String path){
         Circle circle = circleService.validatePath(path);
-        if(circleService.circleManagedByManager(circle,account)){
+        if(circleService.circleManagedByManager(account,circle)){
             model.addAttribute(account);
             model.addAttribute(circle);
             model.addAttribute(new ActivityForm());
@@ -152,9 +152,10 @@ public class CircleController {
                                      @RequestParam("id") String id, @RequestParam("page") int page){
 
         Circle circle = circleService.validatePath(path);
-        if(circleService.circleManagedByManager(circle,account)) {
+        if(circleService.circleManagedByManager(account,circle)) {
             model.addAttribute(account);
             model.addAttribute(circle);
+
             Optional<Activity> activity = activityRepository.findById(Long.valueOf(id));
             model.addAttribute(modelMapper.map(activity.get(),ActivityForm.class));
             model.addAttribute("id",id);

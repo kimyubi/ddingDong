@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments.html :: head"></head>
+
+<body class="bg-light">
+
+<nav th:replace="fragments.html :: nav"></nav>
+<div th:replace="fragments.html :: detail-top"></div>
+<div class="row justify-content-center mb-5 shadow-sm">
+    <div class="card col-10">
+        <div class="card-header">
+            <div th:replace="fragments.html :: circle-menu('recruit')"></div>
+        </div>
+        <div class="card-body">
+
+            <div class="row justify-content-center mt-2">
+                <div class="col-12">
+                    <div class="alert alert-light" role="alert">
+                        <div class="py-3 text-center">
+                            <h2><strong>공고 수정</strong></h2>
+                        </div>
+                        <div class="row justify-content-center" >
+                            <form class="col-sm-10" method="post"
+                                  th:action="@{'/circle/'+${circle.path}+'/recruit/modify'}"
+                                  th:object="${recruitForm}">
+                                <input type="text" hidden name="id" th:value="${recruit.id}">
+                                <div class="form-group">
+                                    <label for="title">제목</label>
+                                    <input id="title" type="text" class="form-control" th:field="*{title}"
+                                           placeholder="게시글의 제목을 입력하세요." required>
+                                    <small id="titleHelp" class="form-text text-muted">
+                                         제목을 30자 이내로 입력하세요.
+                                    </small>
+                                    <small class="form-text text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">title Error</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="shortIntroduce">한줄 소개</label>
+                                    <input id="shortIntroduce" type="text" class="form-control" th:field="*{shortIntroduce}"
+                                           placeholder="동아리를 한줄로 간략하게 소개해주세요." required>
+                                    <small id="shortIntroduceHelp" class="form-text text-muted">
+                                            지원자들을 위해 150자 이내로 동아리를 간략하게 소개해주세요.
+                                    </small>
+                                    <small class="form-text text-danger" th:if="${#fields.hasErrors('shortIntroduce')}" th:errors="*{shortIntroduce}">shortIntroduce Error</small>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="limitPersonnel">모집 인원</label>
+                                            <input id="limitPersonnel" type="number" class="form-control col-5" th:field="*{limitPersonnel}"
+                                                   required min="0">
+                                            <small id="limitPersonnelHelp" class="form-text text-muted">
+                                                인원 제한이 없거나 표시하고 싶지 않은 경우 0명을 입력해주세요.
+                                            </small>
+                                            <small class="form-text text-danger" th:if="${#fields.hasErrors('limitPersonnel')}" th:errors="*{limitPersonnel}">limitPersonnel Error</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-4">
+                                        <label for="publishRecruitTime">공고 게시 일시</label>
+                                        <input id="publishRecruitTime" type="datetime-local" th:field="*{publishRecruitTime}" class="form-control"
+                                               aria-describedby="publishRecruitTimeHelp" required>
+                                        <small id="publishRecruitTimeTimeHelp" class="form-text text-muted">
+                                            설정한 공고 게시 일시 이후부터 모집 공고가 공개됩니다.
+                                        </small>
+                                        <small class="form-text text-danger" th:if="${#fields.hasErrors('publishRecruitTime')}" th:errors="*{publishRecruitTime}">Error</small>
+                                    </div>
+                                    <div class="form-group col-4">
+                                        <label for="startRecruitTime">모집 시작 일시</label>
+                                        <input id="startRecruitTime" type="datetime-local" th:field="*{startRecruitTime}" class="form-control"
+                                               aria-describedby="startRecruitTimeHelp" required>
+                                        <small class="form-text text-danger" th:if="${#fields.hasErrors('startRecruitTime')}" th:errors="*{startRecruitTime}">Error</small>
+                                    </div>
+                                    <div class="form-group col-4">
+                                        <label for="endRecruitTime">모집 종료 일시</label>
+                                        <input id="endRecruitTime" type="datetime-local" th:field="*{endRecruitTime}" class="form-control"
+                                               aria-describedby="endRecruitTimeHelp" required>
+                                        <small id="endRecruitTimeHelp" class="form-text text-muted">
+                                            모집 종료 일시가 지나면 해당 모집 공고는 자동으로 종료 상태로 바뀝니다.
+                                        </small>
+                                        <small class="form-text text-danger" th:if="${#fields.hasErrors('endRecruitTime')}" th:errors="*{endRecruitTime}">Error</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="applicationForm">지원 양식</label>
+                                    <textarea id="applicationForm" type="textarea" class="editor form-control"
+                                              aria-describedby="applicationFormHelp" th:field="*{applicationForm}" required></textarea>
+                                    <small id="contentHelp" class="form-text text-muted">
+                                        지원자들에게 공개 될 지원 양식을 입력해주세요.
+                                    </small>
+                                    <small class="form-text text-danger" th:if="${#fields.hasErrors('applicationForm')}" th:errors="*{applicationForm}">applicationForm Error</small>
+                                </div>
+                                <div class="form-group text-center mt-4">
+                                    <input type="submit" class="btn btn-dark px-5 py-2 mr-3" value="수정 하기">
+                                    <a th:href="@{'/circle/'+${circle.path}+'/recruit/detail?id='+${recruit.id}}" class="btn btn-secondary px-5 py-2">취소하기</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments.html :: editor-recruit"></div>
+</body>
+</html>

@@ -16,7 +16,46 @@
             <div class="row">
                 <div th:replace="fragments.html :: recruit-menu('ended')"></div>
                 <div class="col-8 justify-content-center">
-
+                    <div class="row">
+                        <div class="col-10 pr-0 text-left" th:if="${endedRecruit.size() ==0}">
+                            <h4>현재 모집중인 공고가 없습니다.</h4>
+                        </div>
+                        <div class="col-sm-6 pr-0 py-3" th:if="${endedRecruit.size() !=0}" th:each="recruit : ${endedRecruit}">
+                            <div class="card">
+                                <div class="card-header">
+                                    <strong>
+                                        <div>
+                                            <span class="mr-2" th:text="${recruit.title}"></span>
+                                            <span class="badge badge-danger px-2 py-1">모집 종료</span>
+                                        </div>
+                                    </strong>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item list-group-item-secondary">
+                                        <i class="fa fa-calendar"></i>
+                                        <span th:text="${#temporals.format(recruit.startRecruitTime,'yyyy-MM-dd HH:mm')}"></span>
+                                        시 모집 시작
+                                    </li>
+                                    <li class="list-group-item list-group-item-secondary">
+                                        <div>
+                                            <div>
+                                                <i class="fa fa-hourglass-end"></i>
+                                                <span class="fromNow" th:text="${recruit.endRecruitTime}"></span>
+                                                모집  종료
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item list-group-item-secondary" th:if="${recruit.limitPersonnel != 0}">
+                                        <div>
+                                            <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                                            모집 인원 :
+                                            <span th:text="|${recruit.limitPersonnel}명|"></span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-2 text-right justify-content-end">
                     <a th:if="${isManager}" th:href="@{'../'+${circle.path}+'/recruit/create'}" type="button" class="btn btn-secondary btn-sm py-2">
@@ -29,5 +68,16 @@
     </div>
 </div>
 <footer th:replace="fragments.html :: footer"></footer>
+<script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
+<script type="application/javascript">
+    $(function(){
+        moment.locale('ko');
+
+        $(".fromNow").text(function(index, dateTime) {
+            return moment(dateTime, "YYYY-MM-DD`T`hh:mm").fromNow();
+        });
+
+    });
+</script>
 </body>
 </html>

@@ -42,6 +42,7 @@
                                     <form class="col-12" th:action="@{'/circle/'+${circle.path}+'/recruit/enrollment'}" th:method="post"
                                     th:object="${enrollmentForm}">
                                         <input type="text" hidden name="id" th:value="${recruit.id}">
+                                        <input type="text" hidden name="path" th:value="${circle.path}">
                                         <div class="form-group">
                                             <label for="applicationForm" style="font-size: larger" aria-describedby="labelHelp">지원 양식</label>
                                             <textarea id="applicationForm" type="textarea"  class="editor form-control"
@@ -102,11 +103,11 @@
                                 </div>
 
                                 <div class="row justify-content-end mt-5" th:if="${isManager}">
-                                    <button type="button" class="btn btn-outline-primary px-3 py-2">수정하기</button>
+                                    <a th:href="@{'/circle/'+${circle.path}+'/recruit/modify?id='+${recruit.id}}" class="btn btn-outline-primary px-3 py-2">수정하기</a>
                                 </div>
 
                                 <div class="row justify-content-end mt-2" th:if="${isManager}">
-                                    <button type="button" class="btn btn-outline-danger px-3 py-2">삭제하기</button>
+                                    <a th:href="@{'/circle/'+${circle.path}+'/recruit/delete?id='+${recruit.id}}" class="btn btn-outline-danger px-3 py-2">삭제하기</a>
                                 </div>
 
                             </div>
@@ -130,10 +131,9 @@
                 alert($("#success").text());
             }
 
-        if ($("#failure").text()) {
+            if ($("#failure").text()) {
             alert($("#failure").text());
-        }
-
+            }
         });
 </script>
 </body>

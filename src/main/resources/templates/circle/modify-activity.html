@@ -44,6 +44,7 @@
                                 <div class="form-group text-center mt-4">
                                     <input id="update" type="submit" class="btn btn-dark px-5 py-2 mr-2" value="수정하기">
                                     <a th:href="@{'../activity/detail?id='+${id}+'&page='+ ${page}}" class="btn btn-secondary px-5 py-2">취소</a>
+
                                     <form th:action="@{../activity/delete}" th:method="post">
                                         <input  id="delete" type="submit" class="btn btn-danger px-5 py-2 ml-2" value="삭제">
                                     </form>
