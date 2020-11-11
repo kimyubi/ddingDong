@@ -274,10 +274,11 @@ public class RecruitController {
         model.addAttribute(circle);
         model.addAttribute(account);
         model.addAttribute(recruit);
-
-        circleService.circleManagedByManager(account,circle);
+        model.addAttribute("isManager",circleService.isManagerToCircle(account,circle));
 
         Optional<Enrollment> enrollment = enrollmentRepository.findById(id);
+        circleService.isManagerToCircleOrMine(enrollment.get(),account,circle);
+
         if(enrollment.get() != null){
             model.addAttribute("enrollment",enrollment.get());
         }

@@ -8,18 +8,19 @@ import com.mj.ddingdong.main.EmailForm;
 import com.mj.ddingdong.main.PasswordForm;
 import com.mj.ddingdong.main.UpdatePasswordValidator;
 import com.mj.ddingdong.main.service.MainService;
+import com.mj.ddingdong.recruit.domain.Enrollment;
+import com.mj.ddingdong.recruit.repository.EnrollmentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -28,6 +29,7 @@ public class MainController {
     private final MainService mainService;
     private final AccountService accountService;
     private final UpdatePasswordValidator updatePasswordValidator;
+    private final EnrollmentRepository enrollmentRepository;
 
     @InitBinder("passwordForm")
     public void initBinder(WebDataBinder webDataBinder){
@@ -96,6 +98,22 @@ public class MainController {
         rttr.addFlashAttribute("successUpdatePassword","비밀번호 변경이 완료되었습니다.");
         accountService.updatePassword(token,passwordForm);
         return "redirect:/login";
+    }
+
+    @GetMapping("/mycircle/{nickname}")
+    public String myCircleView(@CurrentAccount Account account, @PathVariable String nickname, Model model){
+        if(!account.getNickname().equals(nickname)){
+            throw new AccessDeniedException("접근할 수 없습니다.");
+        }
+
+        List<Enrollment> enrollments = enrollmentRepository.findByAccountId(account.getId());
+        model.addAttribute("enrollments",enrollments);
+        model.addAttribute("account",account);
+        model.addAttribute("isManager",account.isRecognizedManager()&&account.isRecognizedManager());
+
+
+        return "mycircle";
+
     }
 
 

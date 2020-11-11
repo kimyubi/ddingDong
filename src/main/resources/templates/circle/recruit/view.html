@@ -57,8 +57,8 @@
                                         <a th:href="@{'/circle/'+${circle.path}+'/recruit/detail?id='+${recruit.id}}" class="card-link">자세히 보기</a>
                                     </li>
 
-                                    <li class="list-group-item">
-                                        <a th:if="${isManager}" th:href="@{'/circle/'+${circle.path}+'/recruit/applications?id='+${recruit.id}}"
+                                    <li class="list-group-item" th:if="${isManager}">
+                                        <a th:href="@{'/circle/'+${circle.path}+'/recruit/applications?id='+${recruit.id}}"
                                            class="btn btn-outline-success px-4 py-2">지원서 열람하기</a>
                                     </li>
                                 </ul>

@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -87,5 +86,14 @@ public class CircleService {
             circleRepository.save(circle);
         }
 
+    }
+
+    public boolean isManagerToCircleOrMine(Enrollment enrollment, Account account, Circle circle) {
+        if(enrollment.getAccount().equals(account)|| isManagerToCircle(account,circle)){
+            return true;
+        }
+        else{
+            throw new AccessDeniedException("해당 기능을 이용하실 수 없습니다.");
+        }
     }
 }

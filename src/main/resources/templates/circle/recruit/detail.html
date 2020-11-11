@@ -35,14 +35,14 @@
                     <div class="alert alert-light" role="alert">
                         <div class="row">
                             <div class="col-10 mt-3">
-                                <h2 class="text-left mt-3 mb-3" >
+                                <h2 class="text-left mt-3 mb-3">
                                     <strong th:text="${recruit.shortIntroduce}"></strong>
                                     <div class="text-right">
                                         <a th:if="${isManager}" th:href="@{'/circle/'+${circle.path}+'/recruit/applications?id='+${recruit.id}}"
-                                           class="btn btn-outline-success px-4 py-2">지원서 열람하기</a>
+                                           class="btn btn-outline-success px-4 py-2 mt-3">지원서 열람하기</a>
                                     </div>
                                 </h2>
-                                <div class="row text-left mt-3">
+                                <div class="row text-left">
                                     <form class="col-12" th:action="@{'/circle/'+${circle.path}+'/recruit/enrollment'}" th:method="post"
                                     th:object="${enrollmentForm}">
                                         <input type="text" hidden name="id" th:value="${recruit.id}">
@@ -61,7 +61,7 @@
                                             <small class="form-text text-danger" th:if="${#fields.hasErrors('applicationForm')}" th:errors="*{applicationForm}">applicationForm Error</small>
                                         </div>
                                         <div class="form-group mt-5 text-center">
-                                            <input type="submit" class="btn btn-dark px-5 py-2 mr-3" value="지원 하기">
+                                            <input type="submit" class="btn btn-dark px-5 py-2 mr-3" th:if="${!isManager}" value="지원 하기">
                                             <a th:href="@{'/circle/'+${circle.path}+'/recruit'}" class="btn btn-secondary px-5 py-2">목록</a>
                                         </div>
                                     </form>
