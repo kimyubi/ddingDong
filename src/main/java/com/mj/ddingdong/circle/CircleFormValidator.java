@@ -30,10 +30,6 @@ public class CircleFormValidator implements Validator {
             errors.rejectValue("path","wrong.path","사용중인 URL은 사용할 수 없습니다.");
         }
 
-        if(circleRepository.existsByTitle(circleForm.getTitle())){
-            errors.rejectValue("title","wrong.title","사용중인 동아리 이름은 사용할 수 없습니다.");
-        }
-
 
     }
 }

@@ -96,4 +96,9 @@ public class CircleService {
             throw new AccessDeniedException("해당 기능을 이용하실 수 없습니다.");
         }
     }
+
+    public void modifyCircle(Circle circle, CircleForm circleForm) {
+        modelMapper.map(circleForm,circle);
+
+    }
 }

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments.html :: head"></head>
+
+<body class="bg-light">
+
+<nav th:replace="fragments.html :: nav"></nav>
+<div th:replace="fragments.html :: detail-top"></div>
+<div hidden th:text="${success}" th:if="${success}" id="success"></div>
+<div class="row justify-content-center mb-5">
+    <div class="card text-center col-10">
+        <div class="card-header">
+            <div th:replace="fragments.html :: circle-menu('setting')"></div>
+        </div>
+        <div class="card-body mt-4">
+            <div class="row">
+                <div th:replace="fragments.html :: setting-menu('circle')"></div>
+                <div class="col-8 justify-content-center">
+                    <div class="row justify-content-center">
+                        <form class="col-12" action="#"
+                              th:action="@{'/circle/'+${circle.path}+'/setting'}" th:object="${circleForm}" method="post">
+                            <div class="form-group">
+                                <label for="title">동아리 이름</label>
+                                <input id="title" type="text" th:field="*{title}" class="form-control"
+                                       aria-describedby="titleHelp" required>
+                                <small id="titleHelp" class="form-text text-muted">
+                                    동아리 제목을 50자 이내로 입력하세요.
+                                </small>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">title Error</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="ownUrl">동아리 대표링크</label>
+                                <input id="ownUrl" type="text" th:field="*{ownUrl}" class="form-control"
+                                       aria-describedby="ownUrlHelp">
+                                <small id="ownUrlHelp" class="form-text text-muted">
+                                    동아리의 공식 SNS가 있다면 링크를 입력하세요. 링크가 여러개일 경우 쉼표로 구분하여 입력하세요.
+                                </small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="field">동아리 분류</label>
+                                <select class="form-control" id="field" th:field="*{field}" required>
+                                    <option value="학술분과">학술분과</option>
+                                    <option value="전시창작분과">전시창작분과</option>
+                                    <option value="체육분과">체육분과</option>
+                                    <option value="연행예술분과">연행예술분과</option>
+                                    <option value="종교분과">종교분과</option>
+                                    <option value="봉사분과">봉사분과</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="shortIntroduce">한줄 소개</label>
+                                <input id="shortIntroduce" type="text" th:field="*{shortIntroduce}" class="form-control" placeholder="한줄로 간결하게 적어주세요."
+                                       aria-describedby="shortIntroduceHelp" required>
+                                <small id="shortIntroduceHelp" class="form-text text-muted">
+                                    100자 이내로 입력하세요.
+                                </small>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('shortIntroduce')}" th:errors="*{shortIntroduce}">shortIntroduce Error</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="detailDescription">상세 소개</label>
+                                <textarea id="detailDescription" type="textarea" th:field="*{detailDescription}" class="editor form-control"
+                                          placeholder="동아리에 대해 자세히 소개해주세요." aria-describedby="fullDescriptionHelp" required></textarea>
+                                <small id="detailDescriptionHelp" class="form-text text-muted">
+                                    동아리의 목표와 일정, 진행 방식, 활동 계획 등 동아리에 대한 상세한 정보를 적어 주세요.
+                                </small>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('detailDescription')}" th:errors="*{detailDescription}">detailDescription Error</small>
+                            </div>
+
+                            <div class="form-group">
+                                <button class="btn btn-secondary btn-block" type="submit"
+                                        aria-describedby="submitHelp">수정하기</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer th:replace="fragments.html :: footer"></footer>
+<div th:replace="fragments.html :: editor"></div>
+<script type="application/javascript">
+    $(function() {
+        if ($("#success").text()) {
+            alert($("#success").text());
+        }
+    });
+</script>
+</body>
+</html>

@@ -8,7 +8,9 @@ import javax.persistence.*;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity @EqualsAndHashCode(of = "id")
@@ -28,7 +30,7 @@ public class Circle {
     @Column(unique = true, nullable = false)
     private String path;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String title;
 
     @Basic(fetch = FetchType.EAGER)
@@ -62,8 +64,8 @@ public class Circle {
         return URLEncoder.encode(path, "utf-8");
     }
 
-    public String[] getOwnUrl() throws UnsupportedEncodingException {
-        return this.ownUrl.replace(" ","").split(",");
+    public String[] getOwnUrlArray() throws UnsupportedEncodingException {
+        return this.ownUrl.replace(" ", "").split(",");
     }
 
     public boolean isMember(Account account){
