@@ -13,4 +13,6 @@ public interface CircleRepository extends JpaRepository<Circle,Long> {
     boolean existsByTitle(String title);
 
     Circle findByPath(String path);
+
+    Circle findCircleById(Long id);
 }

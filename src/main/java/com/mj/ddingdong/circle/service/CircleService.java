@@ -32,9 +32,10 @@ public class CircleService {
         Circle circle = modelMapper.map(circleForm, Circle.class);
         circle.getManagers().add(account);
         // 여기서 알림 보내기.
+        circle = circleRepository.save(circle);
         applicationEventPublisher.publishEvent(new CircleCreatedEvent(circle));
 
-        return circleRepository.save(circle);
+        return circle;
     }
 
     public Circle validatePath(String path) {
