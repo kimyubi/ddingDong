@@ -3,12 +3,14 @@ package com.mj.ddingdong.circle.service;
 import com.mj.ddingdong.account.domain.Account;
 import com.mj.ddingdong.circle.domain.Activity;
 import com.mj.ddingdong.circle.domain.Circle;
+import com.mj.ddingdong.circle.event.CircleCreatedEvent;
 import com.mj.ddingdong.circle.form.CircleForm;
 import com.mj.ddingdong.circle.repository.ActivityRepository;
 import com.mj.ddingdong.circle.repository.CircleRepository;
 import com.mj.ddingdong.recruit.domain.Enrollment;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,11 +25,14 @@ public class CircleService {
     private final CircleRepository circleRepository;
     private final ModelMapper modelMapper = new ModelMapper();
     private final ActivityRepository activityRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     public Circle saveCircle(Account account, CircleForm circleForm) {
         validateAccountManager(account);
         Circle circle = modelMapper.map(circleForm, Circle.class);
         circle.getManagers().add(account);
+        // 여기서 알림 보내기.
+        applicationEventPublisher.publishEvent(new CircleCreatedEvent(circle));
 
         return circleRepository.save(circle);
     }
