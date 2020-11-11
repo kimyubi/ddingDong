@@ -101,4 +101,16 @@ public class CircleService {
         modelMapper.map(circleForm,circle);
 
     }
+
+    public void updateBanner(Circle circle, String image) {
+        circle.setBannerImage(image);
+    }
+
+    public void enableStudyBanner(Circle circle) {
+        circle.setUseBanner(true);
+    }
+
+    public void disableStudyBanner(Circle circle) {
+        circle.setUseBanner(false);
+    }
 }

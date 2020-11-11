@@ -7,6 +7,7 @@ import com.mj.ddingdong.circle.form.CircleForm;
 import com.mj.ddingdong.circle.service.CircleService;
 import com.mj.ddingdong.main.CurrentAccount;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -52,5 +53,42 @@ public class CircleSettingController {
         rttr.addFlashAttribute("success","동아리가 성공적으로 수정되었습니다.");
 
         return "redirect:/circle/"+circle.getEncodedPath(path)+"/setting";
+    }
+
+    @GetMapping("/setting/banner")
+    public String bannerSetting(@CurrentAccount Account account, @PathVariable String path, Model model){
+        Circle circle = circleService.validatePath(path);
+        circleService.circleManagedByManager(account,circle);
+
+        model.addAttribute(account);
+        model.addAttribute(circle);
+
+        return "circle/setting/banner";
+    }
+
+    @PostMapping("/setting/banner")
+    public String bannerSubmit(@CurrentAccount Account account, @PathVariable String path,
+                                   String image, RedirectAttributes attributes) throws UnsupportedEncodingException {
+        Circle circle = circleService.validatePath(path);
+        circleService.circleManagedByManager(account,circle);
+        circleService.updateBanner(circle, image);
+        attributes.addFlashAttribute("success", "배너 이미지를 수정했습니다.");
+        return "redirect:/circle/" + circle.getEncodedPath(path) + "/setting/banner";
+    }
+
+    @PostMapping("/setting/banner/enable")
+    public String enableStudyBanner(@CurrentAccount Account account, @PathVariable String path) throws UnsupportedEncodingException {
+        Circle circle = circleService.validatePath(path);
+        circleService.circleManagedByManager(account,circle);
+        circleService.enableStudyBanner(circle);
+        return "redirect:/circle/" + circle.getEncodedPath(path) + "/setting/banner";
+    }
+
+    @PostMapping("/setting/banner/disable")
+    public String disableStudyBanner(@CurrentAccount Account account, @PathVariable String path) throws UnsupportedEncodingException {
+        Circle circle = circleService.validatePath(path);
+        circleService.circleManagedByManager(account,circle);
+        circleService.disableStudyBanner(circle);
+        return "redirect:/circle/" + circle.getEncodedPath(path) + "/setting/banner";
     }
 }

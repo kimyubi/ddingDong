@@ -86,5 +86,7 @@ public class Circle {
         return false;
     }
 
-
+    public String getBannerImage() {
+        return this.bannerImage != null ? bannerImage : "/images/banner.jpg";
+    }
 }
