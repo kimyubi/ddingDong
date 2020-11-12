@@ -6,7 +6,10 @@
 <body class="bg-light">
 
 <nav th:replace="fragments.html :: nav"></nav>
-<div class="container">
+<div class="container" th:if="${(account.signUpAsManager || account.recognizedManager)}">
+    <h3 class="px-3 py-5">매니저에게는 지원하지 않는 기능입니다.</h3>
+</div>
+<div class="container" th:if="${!(account.signUpAsManager || account.recognizedManager)}">
     <div class="row mt-5 justify-content-center">
         <div class="col-2">
             <div th:replace="fragments.html :: settings-menu('notification')"></div>
