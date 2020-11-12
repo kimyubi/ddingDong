@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments.html :: head"></head>
+<body class="bg-light">
+<nav th:replace="fragments.html :: nav"></nav>
+<div class="container">
+    <div class="row py-5 text-center">
+        <div class="col-3">
+            <ul class="list-group">
+                <a href="#" th:href="@{/notification}" th:classappend="${isNew}? active"
+                   class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    읽지 않은 알림
+                    <span th:text="${numberOfNotChecked}">3</span>
+                </a>
+                <a href="#" th:href="@{/notification/old}" th:classappend="${!isNew}? active"
+                   class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    읽은 알림
+                    <span th:text="${numberOfChecked}">0</span>
+                </a>
+            </ul>
+
+            <ul class="list-group mt-4">
+                <a href="#" th:if="${circleCreatedNotifications.size() > 0}"
+                   class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    관심분야 동아리 개설 알림
+                    <span th:text="${circleCreatedNotifications.size() }">0</span>
+                </a>
+                <a href="#" th:if="${recruitStartedNotification.size() > 0}"
+                   class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    관심분야 동아리 모집 시작 알림
+                    <span th:text="${recruitStartedNotification.size()}">0</span>
+                </a>
+            </ul>
+
+            <ul class="list-group mt-4" th:if="${numberOfChecked > 0}">
+                <form th:action="@{/notification}" th:method="post">
+                    <button type="submit" class="btn btn-block btn-outline-warning" aria-describedby="deleteHelp">
+                        읽은 알림 삭제
+                    </button>
+                </form>
+            </ul>
+        </div>
+        <div class="col-8">
+            <div class="card" th:if="${notifications.size() == 0}">
+                <div class="card-header">
+                    알림 메시지가 없습니다.
+                </div>
+            </div>
+
+            <div class="card" th:if="${circleCreatedNotifications.size() > 0}">
+                <div class="card-header">
+                    관심 분야의 동아리가 새로 개설 되었습니다.
+                </div>
+                <div th:replace="fragments.html :: notification-list (notifications=${circleCreatedNotifications})"></div>
+            </div>
+
+            <div class="card mt-4" th:if="${recruitStartedNotification.size() > 0}">
+                <div class="card-header">
+                    관심 분야 동아리의 모집이 시작 되었습니다.
+                </div>
+                <div th:replace="fragments.html :: notification-list (notifications=${recruitStartedNotification})"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="fragments.html :: footer"></footer>
+<script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
+<script type="application/javascript">
+    $(function() {
+        moment.locale('ko');
+        $(".fromNow").text(function(index, dateTime) {
+            return moment(dateTime, "YYYY-MM-DD`T`hh:mm").fromNow();
+        });
+    });
+</script>
+
+</body>
+</html>
