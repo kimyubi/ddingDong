@@ -9,6 +9,8 @@ import com.mj.ddingdong.circle.repository.ActivityRepository;
 import com.mj.ddingdong.circle.repository.CircleRepository;
 import com.mj.ddingdong.recruit.domain.Enrollment;
 import com.mj.ddingdong.recruit.domain.Recruit;
+import com.mj.ddingdong.recruit.repository.EnrollmentRepository;
+import com.mj.ddingdong.recruit.repository.RecruitRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.ApplicationEventPublisher;
@@ -28,6 +30,8 @@ public class CircleService {
     private final ModelMapper modelMapper = new ModelMapper();
     private final ActivityRepository activityRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
+    private final RecruitRepository recruitRepository;
+    private final EnrollmentRepository enrollmentRepository;
 
     public Circle saveCircle(Account account, CircleForm circleForm) {
         validateAccountManager(account);
@@ -123,8 +127,29 @@ public class CircleService {
         circle.setUseBanner(false);
     }
 
-
     public void deleteCircle(Circle circle) {
+        List<Activity> activities = activityRepository.findByCircle(circle);
+        for(Activity activity : activities){
+            activity.setCircle(null);
+        }
+        circle.getActivities().clear();
+
+        List<Recruit> recruits = recruitRepository.findByCircleOrderByStartRecruitTime(circle);
+
+        for(Recruit recruit : recruits){
+            recruit.setCircle(null);
+            List<Enrollment> enrollments = enrollmentRepository.findbyRecruit(recruit);
+            for(Enrollment enrollment : enrollments){
+                enrollment.setRecruit(null);
+            }
+            recruit.getEnrollments().clear();
+
+        }
+
+        circle.getRecruits().clear();
         circleRepository.delete(circle);
+        //제약조건이 왤케 많아 미친ㄴㄹㅇㄴㄹㅇㅎㄴㅁ ㅎㄴ ㅁㅎㄷㅍ호
+
+
     }
 }

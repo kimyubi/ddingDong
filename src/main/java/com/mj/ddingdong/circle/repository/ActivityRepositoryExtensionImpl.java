@@ -10,6 +10,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
+import java.util.List;
+
 
 public class ActivityRepositoryExtensionImpl extends QuerydslRepositorySupport implements ActivityRepositoryExtension {
 
@@ -28,4 +30,12 @@ public class ActivityRepositoryExtensionImpl extends QuerydslRepositorySupport i
 
         return new PageImpl<>(results.getResults(),pageable, results.getTotal());
     }
+
+    @Override
+    public List<Activity> findByCircle(Circle circle) {
+        QActivity activity = QActivity.activity;
+        JPQLQuery<Activity> query = from(activity).where(activity.circle.id.eq(circle.getId()));
+        return query.fetch();
+    }
+
 }

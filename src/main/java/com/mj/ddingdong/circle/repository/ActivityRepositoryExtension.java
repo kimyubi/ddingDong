@@ -7,8 +7,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Transactional(readOnly = true)
 public interface ActivityRepositoryExtension {
 
     Page<Activity> findByCircle(Circle circle, Pageable pageable);
+
+    List<Activity> findByCircle(Circle circle);
+
+
+
 }

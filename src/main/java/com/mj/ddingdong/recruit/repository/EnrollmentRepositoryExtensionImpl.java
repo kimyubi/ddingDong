@@ -8,6 +8,8 @@ import com.mj.ddingdong.recruit.domain.Recruit;
 import com.querydsl.jpa.JPQLQuery;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
+import java.util.List;
+
 public class EnrollmentRepositoryExtensionImpl extends QuerydslRepositorySupport implements EnrollmentRepositoryExtension  {
 
     public EnrollmentRepositoryExtensionImpl() {
@@ -21,5 +23,13 @@ public class EnrollmentRepositoryExtensionImpl extends QuerydslRepositorySupport
                 .and(enrollment.recruit.id.eq(recruit.getId())));
 
         return query.fetchCount();
+    }
+
+    @Override
+    public List<Enrollment> findbyRecruit(Recruit recruit) {
+        QEnrollment enrollment = QEnrollment.enrollment;
+        JPQLQuery<Enrollment> query = from(enrollment).where(enrollment.recruit.id.eq(recruit.getId()));
+
+        return query.fetch();
     }
 }

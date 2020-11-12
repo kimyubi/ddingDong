@@ -54,10 +54,10 @@ public class Circle {
     @Column(nullable = true)
     private boolean recruiting;
 
-    @OneToMany(mappedBy = "circle")
+    @OneToMany(mappedBy = "circle", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Activity> activities;
 
-    @OneToMany(mappedBy = "circle")
+    @OneToMany(mappedBy = "circle", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Recruit> recruits;
 
     private LocalDateTime createdTime;
