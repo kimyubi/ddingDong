@@ -13,4 +13,6 @@ import java.util.List;
 public interface RecruitRepository extends JpaRepository<Recruit,Long> {
 
     List<Recruit> findByCircleOrderByStartRecruitTime(Circle circle);
+
+    Recruit findRecruitById(Long id);
 }
