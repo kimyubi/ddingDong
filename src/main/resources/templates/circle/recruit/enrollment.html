@@ -32,7 +32,7 @@
                                         <img th:if="${!#strings.isEmpty(enrollment.account?.profileImage)}" th:src="${enrollment.account?.profileImage}" width="30" height="30" class="rounded border"/>
                                     </a>
                                     <strong th:text="${enrollment.account.name}"></strong>
-                                    <span th:if="${circle.isMember(account)}" class="badge badge-danger py-2">동아리 부원</span>
+                                    <span th:if="${circle.isMember(enrollment.account)}" class="badge badge-danger py-2">동아리 부원</span>
 
                                 </div>
                                 <div class="form-group">

@@ -95,6 +95,7 @@ public class RecruitController {
         Circle circle = circleService.validatePath(path);
         model.addAttribute(account);
         model.addAttribute(circle);
+        model.addAttribute("isManager",circleService.isManagerToCircle(account,circle));
 
         circleService.circleManagedByManager(account,circle);
         model.addAttribute(new RecruitForm());
@@ -161,14 +162,19 @@ public class RecruitController {
         model.addAttribute("recruit",recruit);
 
         if(errors.hasErrors()){
+            model.addAttribute("isManager",circleService.isManagerToCircle(account,circle));
             return "circle/recruit/detail";
         }
         if(recruit.getEndRecruitTime().isBefore(LocalDateTime.now())||recruit.getStartRecruitTime().isAfter(LocalDateTime.now())){
             model.addAttribute("failure","현재는 모집 기간이 아닙니다.");
+            model.addAttribute("isManager",circleService.isManagerToCircle(account,circle));
+
             return "circle/recruit/detail";
         }
         if(enrollmentRepository.isAlreadyEnrolled(account,recruit) != 0){
             model.addAttribute("failure","이미 지원한 공고입니다.");
+            model.addAttribute("isManager",circleService.isManagerToCircle(account,circle));
+
             return "circle/recruit/detail";
         }
 
@@ -209,6 +215,7 @@ public class RecruitController {
         model.addAttribute(account);
         model.addAttribute(recruit);
         model.addAttribute(modelMapper.map(recruit,RecruitForm.class));
+        model.addAttribute("isManager",circleService.isManagerToCircle(account,circle));
 
         return "circle/recruit/modify";
     }
@@ -254,10 +261,11 @@ public class RecruitController {
         model.addAttribute(circle);
         model.addAttribute(account);
         model.addAttribute(recruit);
-
         circleService.circleManagedByManager(account,circle);
         List<Enrollment> enrollments = enrollmentRepository.findByRecruitIdOrderByEnrolledTime(recruit.getId());
         model.addAttribute("enrollments",enrollments);
+        model.addAttribute("isManager",circleService.isManagerToCircle(account,circle));
+
         return "circle/recruit/applications";
     }
 

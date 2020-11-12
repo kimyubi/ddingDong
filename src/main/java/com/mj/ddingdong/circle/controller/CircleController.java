@@ -70,6 +70,7 @@ public class CircleController {
 
         model.addAttribute(circle);
         model.addAttribute(account);
+        model.addAttribute("isManager",circleService.isManagerToCircle(account,circle));
 
         return "circle/detail";
     }
@@ -81,6 +82,7 @@ public class CircleController {
 
         model.addAttribute(account);
         model.addAttribute(circle);
+        model.addAttribute("isManager",circleService.isManagerToCircle(account,circle));
 
         return "circle/member";
     }
@@ -108,6 +110,7 @@ public class CircleController {
             model.addAttribute(account);
             model.addAttribute(circle);
             model.addAttribute(new ActivityForm());
+            model.addAttribute("isManager",circleService.isManagerToCircle(account,circle));
         }
         return "circle/write";
     }
@@ -135,13 +138,12 @@ public class CircleController {
         model.addAttribute(account);
         model.addAttribute(circle);
 
-        model.addAttribute("isManager",account.isRecognizedManager() && account.isRecognizedManager());
-
         Optional<Activity> activity = activityRepository.findById(Long.valueOf(id));
         model.addAttribute("activity",activity.get());
         model.addAttribute("page",page);
 
         activityService.plusViewCount(circle,activity);
+        model.addAttribute("isManager",circleService.isManagerToCircle(account,circle));
 
         return "circle/detail-activity";
 
@@ -160,6 +162,8 @@ public class CircleController {
             model.addAttribute(modelMapper.map(activity.get(),ActivityForm.class));
             model.addAttribute("id",id);
             model.addAttribute("page",page);
+            model.addAttribute("isManager",circleService.isManagerToCircle(account,circle));
+
         }
         return "circle/modify-activity";
     }
@@ -173,6 +177,7 @@ public class CircleController {
             model.addAttribute(circle);
             model.addAttribute("id",id);
             model.addAttribute("page",page);
+            model.addAttribute("isManager",circleService.isManagerToCircle(account,circle));
 
             return "circle/modify-activity";
         }

@@ -34,6 +34,7 @@ public class CircleSettingController {
         model.addAttribute(account);
         model.addAttribute(circle);
         model.addAttribute("circleForm" , modelMapper.map(circle, CircleForm.class));
+        model.addAttribute("isManager",circleService.isManagerToCircle(account,circle));
 
         return "circle/setting/circle-modify";
     }
@@ -62,6 +63,7 @@ public class CircleSettingController {
 
         model.addAttribute(account);
         model.addAttribute(circle);
+        model.addAttribute("isManager",circleService.isManagerToCircle(account,circle));
 
         return "circle/setting/banner";
     }

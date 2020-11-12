@@ -120,21 +120,6 @@ public class MainController {
         return "redirect:/login";
     }
 
-    @GetMapping("/mycircle/{nickname}")
-    public String myCircleView(@CurrentAccount Account account, @PathVariable String nickname, Model model){
-        if(!account.getNickname().equals(nickname)){
-            throw new AccessDeniedException("접근할 수 없습니다.");
-        }
-
-        List<Enrollment> enrollments = enrollmentRepository.findByAccountId(account.getId());
-        model.addAttribute("enrollments",enrollments);
-        model.addAttribute("account",account);
-        model.addAttribute("isManager",account.isRecognizedManager()&&account.isRecognizedManager());
-
-
-        return "mycircle";
-    }
-
     @GetMapping("/search")
     public String search(@PageableDefault(size = 6, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable, @CurrentAccount Account account, String keyword, Model model){
         Page<Circle> circlePage = circleRepository.findByKeyword(keyword,pageable);
