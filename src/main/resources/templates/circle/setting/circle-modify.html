@@ -16,7 +16,7 @@
         <div class="card-body mt-4">
             <div class="row">
                 <div th:replace="fragments.html :: setting-menu('circle')"></div>
-                <div class="col-8 justify-content-center">
+                <div class="col-8">
                     <div class="row justify-content-center">
                         <form class="col-12" action="#"
                               th:action="@{'/circle/'+${circle.path}+'/setting'}" th:object="${circleForm}" method="post">
@@ -77,6 +77,17 @@
                             </div>
                         </form>
                     </div>
+                    <div class="row mt-3 text-left">
+                        <h3 class="col-12 lead">동아리 삭제</h3>
+                    </div>
+                    <div class="alert alert-danger  mt-3 mb-3" role="alert">
+                        동아리를 삭제하게 되면 다시 복구할 수 없습니다. 신중하게 삭제해주세요.
+                    </div>
+                    <form th:action="@{/delete-circle}" method="post" class="text-left">
+                        <input type="text" name="circleId" th:value="${circle.id}" hidden>
+                        <button id="deleteCircle" class="btn btn-outline-danger mb-3 mb-3" type="submit"
+                                aria-describedby="submitHelp">동아리 삭제</button>
+                    </form>
                 </div>
             </div>
         </div>

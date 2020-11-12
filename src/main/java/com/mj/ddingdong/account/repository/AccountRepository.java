@@ -28,4 +28,6 @@ public interface AccountRepository extends JpaRepository<Account,Long>,AccountRe
     Account findByToken(String token);
 
     List<Account> findAllByField(String field);
+
+    Account findAccountById(Long id);
 }

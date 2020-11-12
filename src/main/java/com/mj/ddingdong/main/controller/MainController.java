@@ -2,9 +2,9 @@ package com.mj.ddingdong.main.controller;
 
 import com.mj.ddingdong.account.domain.Account;
 import com.mj.ddingdong.account.form.SignUpForm;
+import com.mj.ddingdong.account.repository.AccountRepository;
 import com.mj.ddingdong.account.service.AccountService;
 import com.mj.ddingdong.circle.domain.Circle;
-import com.mj.ddingdong.circle.domain.QCircle;
 import com.mj.ddingdong.circle.repository.CircleRepository;
 import com.mj.ddingdong.main.CurrentAccount;
 import com.mj.ddingdong.main.EmailForm;
@@ -13,6 +13,7 @@ import com.mj.ddingdong.main.UpdatePasswordValidator;
 import com.mj.ddingdong.main.service.MainService;
 import com.mj.ddingdong.recruit.domain.Enrollment;
 import com.mj.ddingdong.recruit.repository.EnrollmentRepository;
+import com.mj.ddingdong.tag.domain.FieldTag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +29,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequiredArgsConstructor
@@ -38,6 +40,7 @@ public class MainController {
     private final UpdatePasswordValidator updatePasswordValidator;
     private final EnrollmentRepository enrollmentRepository;
     private final CircleRepository circleRepository;
+    private final AccountRepository accountRepository;
 
     @InitBinder("passwordForm")
     public void initBinder(WebDataBinder webDataBinder){
@@ -47,12 +50,16 @@ public class MainController {
 
     @GetMapping("/")
     public String main(@CurrentAccount Account account, Model model)
-    {
-        model.addAttribute("account",account);
+    {  model.addAttribute("account",account);
         if(account == null){
             model.addAttribute("circleList",circleRepository.findFirst9OrderByCreatedTimeDesc());
             return "index";
         }
+        account = accountRepository.findAccountById(account.getId());
+        Set<FieldTag> fieldTags = account.getFieldTags();
+        model.addAttribute("defalutCircleList",circleRepository.findFirst12OrderByCreatedTimeDesc());
+        model.addAttribute("managedCircles",circleRepository.findByManager(account));
+        model.addAttribute("joinedCircles",circleRepository.findByMember(account));
 
         return "logined-index";
     }
@@ -129,7 +136,7 @@ public class MainController {
     }
 
     @GetMapping("/search")
-    public String search(@PageableDefault(size = 6, sort = "createdTime", direction = Sort.Direction.ASC) Pageable pageable, @CurrentAccount Account account, String keyword, Model model){
+    public String search(@PageableDefault(size = 6, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable, @CurrentAccount Account account, String keyword, Model model){
         Page<Circle> circlePage = circleRepository.findByKeyword(keyword,pageable);
 
         model.addAttribute("account",account);

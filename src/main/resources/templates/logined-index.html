@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments.html :: head"></head>
+
+<body class="bg-light">
+
+<nav th:replace="fragments.html :: nav"></nav>
+<div class="alert alert-danger" role="alert" th:if="${account != null && !account.recognizedManager && account.signUpAsManager}">
+    매니저 권한을 부여받은 이후부터 ddingDong 서비스를 이용하실 수 있으며, 권한부여에는 수 일 이내의 시간이 소요될 수 있습니다.
+</div>
+<div hidden th:text="${success}" th:if="${success}" id="success"></div>
+<div class="row mt-3 py-5 ml-2 mr-1">
+    <div class="col-sm-2">
+        <h5 class="font-weight-light"><i class="fa fa-tag">동아리 분과</i></h5>
+        <ul class="list-group list-group-flush">
+            <a th:href="@{'/search?keyword=학술분과'}"
+               class="list-group-item list-group-item-action">
+                <span>학술분과</span>
+            </a>
+            <a th:href="@{'/search?keyword=전시창작분과'}"
+               class="list-group-item list-group-item-action">
+                <span>전시창작분과</span>
+            </a>
+            <a th:href="@{'/search?keyword=체육분과'}"
+               class="list-group-item list-group-item-action">
+                <span>체육분과</span>
+            </a>
+            <a th:href="@{'/search?keyword=연행예술분과'}"
+               class="list-group-item list-group-item-action">
+                <span>연행예술분과</span>
+            </a>
+            <a th:href="@{'/search?keyword=종교분과'}"
+               class="list-group-item list-group-item-action">
+                <span>종교분과</span>
+            </a>
+            <a th:href="@{'/search?keyword=봉사분과'}"
+               class="list-group-item list-group-item-action">
+                <span>봉사분과</span>
+            </a>
+        </ul>
+    </div>
+    <div class="col-sm-8">
+        <div class="row justify-content-center">
+            <div th:replace="fragments.html :: circle-list (circleList=${defalutCircleList})"></div>
+        </div>
+    </div>
+    <div class="col-sm-2">
+        <h5 class="font-weight-light" th:if="${(account.signUpAsManager || account.isRecognizedManager()) && #lists.isEmpty(managedCircles)}">관리중인 동아리가 없습니다.</h5>
+        <h5 class="font-weight-light" th:if="${(account.signUpAsManager || account.isRecognizedManager()) &&!#lists.isEmpty(managedCircles)}">
+            <i class="fa fa-map-marker-alt"></i>
+            관리중인 동아리</h5>
+        <div class="list-group" th:if="${(account.signUpAsManager || account.isRecognizedManager()) &&!#lists.isEmpty(managedCircles)}">
+            <a href="#" th:href="@{'/circle/' + ${circle.path}}" th:text="${circle.title}"
+               class="list-group-item list-group-item-action" th:each="circle: ${managedCircles}">
+                circle title
+            </a>
+        </div>
+        <h5 class="font-weight-light mt-3" th:if="${!(account.signUpAsManager && account.isRecognizedManager()) && #lists.isEmpty(joinedCircles)}">참여중인 동아리가 없습니다.</h5>
+        <h5 class="font-weight-light mt-3" th:if="${!(account.signUpAsManager && account.isRecognizedManager()) && !#lists.isEmpty(joinedCircles)}">
+            <i class="fa fa-map-marker-alt"></i>
+            참여중인 동아리</h5>
+        <div class="list-group" th:if="${!(account.signUpAsManager && account.isRecognizedManager()) &&!#lists.isEmpty(joinedCircles)}">
+            <a href="#" th:href="@{'/circle/' + ${circle.path}}" th:text="${circle.title}"
+               class="list-group-item list-group-item-action" th:each="circle: ${joinedCircles}">
+                circle title
+            </a>
+        </div>
+    </div>
+</div>
+<footer th:replace="fragments.html :: footer"></footer>
+<script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
+<script type="application/javascript">
+    $(function() {
+        moment.locale('ko');
+        $(".fromNow").text(function(index, dateTime) {
+            return moment(dateTime, "YYYY-MM-DD`T`hh:mm").fromNow();
+        });
+
+        $(".date").text(function(index, dateTime) {
+            return moment(dateTime, "YYYY-MM-DD`T`hh:mm").format('LL');
+        });
+    });
+</script>
+<script>
+    $(function() {
+        if ($("#success").text()) {
+            alert($("#success").text());
+        }
+    });
+</script>
+</body>
+</html>

@@ -8,6 +8,7 @@ import com.mj.ddingdong.circle.form.CircleForm;
 import com.mj.ddingdong.circle.repository.ActivityRepository;
 import com.mj.ddingdong.circle.repository.CircleRepository;
 import com.mj.ddingdong.recruit.domain.Enrollment;
+import com.mj.ddingdong.recruit.domain.Recruit;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.ApplicationEventPublisher;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Transactional
@@ -119,5 +121,10 @@ public class CircleService {
 
     public void disableStudyBanner(Circle circle) {
         circle.setUseBanner(false);
+    }
+
+
+    public void deleteCircle(Circle circle) {
+        circleRepository.delete(circle);
     }
 }

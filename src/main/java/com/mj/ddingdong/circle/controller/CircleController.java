@@ -194,5 +194,14 @@ public class CircleController {
         return "redirect:/circle/"+ circle.getEncodedPath(path)+"/activity?id="+id+"&page="+page;
     }
 
+    @PostMapping("/delete-circle")
+    public String deleteCircle(@CurrentAccount Account account, Long circleId, RedirectAttributes rttr){
+        Circle circle = circleRepository.findCircleById(circleId);
+        circleService.circleManagedByManager(account,circle);
+        circleService.deleteCircle(circle);
+        rttr.addFlashAttribute("success","동아리가 성공적으로 삭제되었습니다.");
+        return "redirect:/";
+    }
+
 
 }
