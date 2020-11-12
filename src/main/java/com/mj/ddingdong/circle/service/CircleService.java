@@ -31,6 +31,7 @@ public class CircleService {
         validateAccountManager(account);
         Circle circle = modelMapper.map(circleForm, Circle.class);
         circle.getManagers().add(account);
+        circle.setCreatedTime(LocalDateTime.now());
         // 여기서 알림 보내기.
         circle = circleRepository.save(circle);
         applicationEventPublisher.publishEvent(new CircleCreatedEvent(circle));

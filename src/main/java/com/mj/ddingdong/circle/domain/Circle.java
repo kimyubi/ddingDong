@@ -60,6 +60,9 @@ public class Circle {
     @OneToMany(mappedBy = "circle")
     private Set<Recruit> recruits;
 
+    private LocalDateTime createdTime;
+
+
     public String getEncodedPath(String path) throws UnsupportedEncodingException {
         return URLEncoder.encode(path, "utf-8");
     }

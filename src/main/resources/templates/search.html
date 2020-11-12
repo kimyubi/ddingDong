@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments.html :: head"></head>
+
+<body class="bg-light">
+
+<nav th:replace="fragments.html :: nav"></nav>
+<div class="container">
+    <div class="py-5 text-center">
+        <div class="container">
+            <div class="py-5 text-center">
+                <p class="lead" th:if="${circlePage.getTotalElements() == 0}">
+                    <strong th:text="${keyword}" id="keyword" class="context"></strong>에 해당하는 동아리가 존재하지 않습니다.
+                </p>
+                <p class="lead" th:if="${circlePage.getTotalElements() > 0}">
+                    <strong th:text="${keyword}" id="keyword" class="context"></strong>에 해당하는 동아리가
+                    <span th:text="${circlePage.getTotalElements()}"></span>개
+                    검색되었습니다.
+                </p>
+            </div>
+            <div class="row justify-content-center">
+                <div th:replace="fragments.html :: circle-list (circleList=${circlePage.getContent()})"></div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-sm-10">
+                    <nav>
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item" th:classappend="${!circlePage.hasPrevious()}? disabled">
+                                <a th:href="@{'/search?keyword=' + ${keyword} + '&sort=' + ${sortProperty} + ',desc&page=' + ${circlePage.getNumber() - 1}}"
+                                   class="page-link" tabindex="-1" aria-disabled="true">
+                                    Previous
+                                </a>
+                            </li>
+                            <li class="page-item" th:classappend="${i == circlePage.getNumber()}? active"
+                                th:each="i: ${#numbers.sequence(0, circlePage.getTotalPages() - 1)}">
+                                <a th:href="@{'/search?keyword=' + ${keyword} + '&page=' + ${i}}"
+                                   class="page-link" href="#" th:text="${i + 1}">1</a>
+                            </li>
+                            <li class="page-item" th:classappend="${!circlePage.hasNext()}? disabled">
+                                <a th:href="@{'/search?keyword=' + ${keyword} + '&page=' + ${circlePage.getNumber() + 1}}"
+                                   class="page-link">
+                                    Next
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="fragments.html :: footer"></footer>
+<script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
+<script type="application/javascript">
+    $(function() {
+        moment.locale('ko');
+        $(".fromNow").text(function(index, dateTime) {
+            return moment(dateTime, "YYYY-MM-DD`T`hh:mm").fromNow();
+        });
+
+        $(".date").text(function(index, dateTime) {
+            return moment(dateTime, "YYYY-MM-DD`T`hh:mm").format('LL');
+        });
+    });
+</script>
+<script src="/node_modules/mark.js/dist/jquery.mark.min.js"></script>
+<script type="application/javascript">
+    $(function(){
+        var mark = function() {
+            // Read the keyword
+            var keyword = $("#keyword").text();
+
+            // Determine selected options
+            var options = {
+                "each": function(element) {
+                    setTimeout(function() {
+                        $(element).addClass("animate");
+                    }, 150);
+                }
+            };
+
+            // Mark the keyword inside the context
+            $(".context").unmark({
+                done: function() {
+                    $(".context").mark(keyword, options);
+                }
+            });
+        };
+
+        mark();
+    });
+</script>
+
+</body>
+</html>

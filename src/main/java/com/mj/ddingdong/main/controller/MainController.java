@@ -3,6 +3,9 @@ package com.mj.ddingdong.main.controller;
 import com.mj.ddingdong.account.domain.Account;
 import com.mj.ddingdong.account.form.SignUpForm;
 import com.mj.ddingdong.account.service.AccountService;
+import com.mj.ddingdong.circle.domain.Circle;
+import com.mj.ddingdong.circle.domain.QCircle;
+import com.mj.ddingdong.circle.repository.CircleRepository;
 import com.mj.ddingdong.main.CurrentAccount;
 import com.mj.ddingdong.main.EmailForm;
 import com.mj.ddingdong.main.PasswordForm;
@@ -11,6 +14,10 @@ import com.mj.ddingdong.main.service.MainService;
 import com.mj.ddingdong.recruit.domain.Enrollment;
 import com.mj.ddingdong.recruit.repository.EnrollmentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +37,7 @@ public class MainController {
     private final AccountService accountService;
     private final UpdatePasswordValidator updatePasswordValidator;
     private final EnrollmentRepository enrollmentRepository;
+    private final CircleRepository circleRepository;
 
     @InitBinder("passwordForm")
     public void initBinder(WebDataBinder webDataBinder){
@@ -41,7 +49,12 @@ public class MainController {
     public String main(@CurrentAccount Account account, Model model)
     {
         model.addAttribute("account",account);
-        return "index";
+        if(account == null){
+            model.addAttribute("circleList",circleRepository.findFirst9OrderByCreatedTimeDesc());
+            return "index";
+        }
+
+        return "logined-index";
     }
 
     @GetMapping("/login")
@@ -113,6 +126,18 @@ public class MainController {
 
 
         return "mycircle";
+    }
+
+    @GetMapping("/search")
+    public String search(@PageableDefault(size = 6, sort = "createdTime", direction = Sort.Direction.ASC) Pageable pageable, @CurrentAccount Account account, String keyword, Model model){
+        Page<Circle> circlePage = circleRepository.findByKeyword(keyword,pageable);
+
+        model.addAttribute("account",account);
+        model.addAttribute("keyword",keyword);
+        model.addAttribute("circlePage",circlePage);
+
+        return "search";
+
 
     }
 
